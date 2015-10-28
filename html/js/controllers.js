@@ -6,7 +6,7 @@ app.controller('MainController', ['$scope', function($scope) {
     name: 'The Book of Trees', 
     price: 19,
     pubdate: new Date('2014', '03', '08'), 
-    cover: 'https://codecademy5600959-8000.terminal.com/img/the-book-of-trees.jpg',
+    cover: 'http://www.bookoftrees.info/bt/images/cover_640.jpg',
     likes: 0,
     dislikes: 0
   }, 
@@ -14,7 +14,7 @@ app.controller('MainController', ['$scope', function($scope) {
     name: 'Program or be Programmed', 
     price: 8,
     pubdate: new Date('2013', '08', '01'), 
-    cover: 'https://codecademy5600959-8000.terminal.com/img/program-or-be-programmed.jpg',
+    cover: 'http://www.rushkoff.com/storage/program_sm.jpg',
     likes: 0,
     dislikes: 0
   },

@@ -13,28 +13,19 @@
       </div>
     </div>
 
-    <div class="main" ng-controller="MainController">
-      <div class="container">
+	<div class="main" ng-controller="MainController">
+		<div class="container">
 
-        <h1>{{ title }}</h1>
-        <h2>{{ promo }}</h2>
-        
-        <div ng-repeat="product in products" class="col-md-6">
-            <div class="thumbnail">
-                <img ng-src="{{ product.cover }}">
-              <p class="title"> {{ product.name }}</p>
-            <p class="price"> {{ product.price | currency }} </p>
-            <p class="date"> {{ product.pubdate | date }} </p>
-            <div class="rating">
-              <p class="likes" ng-click="plusOne($index)">+{{ product.likes }}</p>
-              <p class="dislikes" ng-click="minusOne($index)">-{{ product.dislikes }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+			<h1>{{ title }}</h1>
+			<h2>{{ promo }}</h2>
 
-    <div class="footer">
+			<div ng-repeat="product in products" class="col-md-6">
+                <product></product>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
       <div class="container">
         <h2>Available for iPhone and Android.</h2>
         <img src="https://s3.amazonaws.com/codecademy-content/projects/shutterbugg/app-store.png" width="120px" />
@@ -47,6 +38,9 @@
     <script src="js/app.js"></script>
 
     <!-- Controllers -->
-    <script src="js/controllers/MainController.js"></script>
+    <script src="js/controllers.js"></script>
+    
+    <!-- Directives -->
+    <script src="js/directives.js"></script>
   </body>
 </html>
