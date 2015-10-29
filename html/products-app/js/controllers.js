@@ -3,7 +3,7 @@
 var controllers = angular.module('controllers', []);
 
 controllers.controller('MainController', function($scope, $http) {
-    $http.get('/products.json').success(function(data) {
+    $http.get('products.json').success(function(data) {
         $scope.products = data;
     });
     
