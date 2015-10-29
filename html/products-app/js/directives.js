@@ -1,4 +1,8 @@
-app.directive('product', function() {
+'use strict';
+
+var directives = angular.module('directives', []);
+
+directives.directive('product', function() {
     return {
         restrict: 'E',
         templateUrl: 'partials/product.html'
