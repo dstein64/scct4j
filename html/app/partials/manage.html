@@ -1,0 +1,45 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-3">
+            Search: <input ng-model="query" class="form-control">
+        </div>
+        <div class="col-md-3">
+            Sort by:
+            <select ng-model="orderProp" class="form-control">
+                <option value="name">Item</option>
+                <option value="created">Created (ascending)</option>
+                <option value="-created">Created (descending)</option>
+                <option value="modified">Modified (ascending)</option>
+                <option value="-modified">Modified (descending)</option>
+                <option value="user">User</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="table">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Item</th>
+					<th>Id</th>
+					<th>User</th>
+					<th>Created</th>
+					<th>Modified</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in items | filter : query | orderBy : orderProp">
+					<td class="col-md-2"><a href="#/items/{{item.id}}">{{item.name}}</a></td>
+					<td class="col-md-1">{{item.id}}</td>
+					<td class="col-md-1">{{item.user}}</td>
+					<td class="col-md-1"><two-line-date date="{{item.created}}"></two-line-date></td>
+					<td class="col-md-1"><two-line-date date="{{item.modified}}"></two-line-date></td>
+					<td class="col-md-3">{{item.description}}</td>
+			    </tr>
+		    </tbody>
+		</table> 
+    </div>
+    
+</div>
