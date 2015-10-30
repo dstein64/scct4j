@@ -9,9 +9,12 @@ controllers.controller('SubmitController', function($scope, $http) {
 controllers.controller('ManageController', function($scope, $http, $location) {
     $scope.name = 'manage';
     $scope.items = [];
-    $http.get('items.json').success(function(data) {
-        $scope.items = data;
-    });
+    $scope.get = function() {
+        $http.get('items.json').success(function(data) {
+            $scope.items = data;
+        });
+    };
+    $scope.get();
     $scope.orderProp = '-modified';
 });
 
