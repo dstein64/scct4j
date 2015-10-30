@@ -14,6 +14,9 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.jasper.runtime.JspFactoryImpl;
 
 import datarepo.MyLogger;
+import daterepo.servlets.FileServlet;
+import daterepo.servlets.ItemServlet;
+import daterepo.servlets.ItemsServlet;
 
 public class Main extends Thread {
     
@@ -87,6 +90,14 @@ public class Main extends Thread {
         
         // Custom Servlets
         
+        Tomcat.addServlet(ctx, "item", ItemServlet.class.getName());
+        ctx.addServletMapping("/item/*", "item");
+        
+        Tomcat.addServlet(ctx, "items", ItemsServlet.class.getName());
+        ctx.addServletMapping("/items", "items");
+        
+        Tomcat.addServlet(ctx, "file", FileServlet.class.getName());
+        ctx.addServletMapping("/file/*", "file");
         
         // Custom Filters
         

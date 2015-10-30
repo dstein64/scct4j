@@ -10,7 +10,7 @@ controllers.controller('ManageController', function($scope, $http) {
     $scope.name = 'manage';
     $scope.items = [];
     $scope.get = function() {
-        $http.get('items.json').then(function(response) {
+        $http.get('/items').then(function(response) {
             $scope.items = response.data;
         });
     };
@@ -23,7 +23,7 @@ controllers.controller('ItemController', function($scope, $http, $routeParams, $
     $scope.id = $routeParams.item;
     $scope.item = {};
     $scope.get = function() {
-        $http.get('items/' + $scope.id + '.json').then(function(response) {
+        $http.get('/item/' + $scope.id).then(function(response) {
             $scope.item = response.data;
         });
     };
@@ -32,7 +32,7 @@ controllers.controller('ItemController', function($scope, $http, $routeParams, $
         var confirm = window.confirm("Are you sure you want to delete this?");
         if (confirm) {
             // TODO: real request
-            $http.post('items/' + $scope.id + '/delete', {}).then(function(response) {
+            $http.delete('/item/' + $scope.id, {}).then(function(response) {
                 $location.path('/');
             }, function(response) {
                 alert('Error Deleting');
@@ -47,7 +47,7 @@ controllers.controller('ItemController', function($scope, $http, $routeParams, $
 controllers.controller('UpdateController', function($scope, $http, $routeParams, $location) {
     $scope.id = $routeParams.item;
     $scope.item = {};
-    $http.get('items/' + $scope.id + '.json').then(function(response) {
+    $http.get('/item/' + $scope.id).then(function(response) {
         $scope.item = response.data;
     });
     $scope.save = function() {
@@ -55,7 +55,7 @@ controllers.controller('UpdateController', function($scope, $http, $routeParams,
         $http.post('items/' + $scope.id + '/update', {}).then(function(response) {
             $location.path('/item/' + $scope.id);
         }, function(response) {
-            alert('Error Saving');
+            alert('Error Updating');
         });
     };
     $scope.cancel = function() {
