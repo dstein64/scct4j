@@ -4,16 +4,18 @@
         <div class="col-md-3">
             <input ng-model="query" class="form-control" placeholder="Search">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
              <label for="sort">Sort</label>
              <select id="sort" ng-model="orderProp" class="form-control">
                 <option value="name">Item</option>
-                <option value="created">Created (ascending)</option>
-                <option value="-created">Created (descending)</option>
-                <option value="modified">Modified (ascending)</option>
-                <option value="-modified">Modified (descending)</option>
+                <option value="id">Id</option>
+                <option value="created">Created</option>
+                <option value="modified">Modified</option>
                 <option value="user">User</option>
             </select>
+            <input type="checkbox" id="descending" value="-"
+                   ng-model="descProp" ng-true-value="'-'" ng-false-value="''">
+            <label for="descending">Descending</label>
         </div>
         <div class="col-md-1">
             <button ng-click="get()" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span> Refresh</button>
@@ -33,7 +35,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in items | filter : query | orderBy : orderProp">
+				<tr ng-repeat="item in items | filter : query | orderBy : descProp + orderProp">
 					<td class="col-md-2"><a href="#/items/{{item.id}}">{{item.name}}</a></td>
 					<td class="col-md-1">{{item.id}}</td>
 					<td class="col-md-1">{{item.user}}</td>

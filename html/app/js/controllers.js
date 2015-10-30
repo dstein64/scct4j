@@ -15,7 +15,8 @@ controllers.controller('ManageController', function($scope, $http, $location) {
         });
     };
     $scope.get();
-    $scope.orderProp = '-modified';
+    $scope.orderProp = 'modified';
+    $scope.descProp = '-';
 });
 
 controllers.controller('ItemController', function($scope, $routeParams) {
