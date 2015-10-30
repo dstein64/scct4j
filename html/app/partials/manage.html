@@ -34,8 +34,8 @@
 					<td class="col-md-2"><a href="#/items/{{item.id}}">{{item.name}}</a></td>
 					<td class="col-md-1">{{item.id}}</td>
 					<td class="col-md-1">{{item.user}}</td>
-					<td class="col-md-1"><two-line-date date="{{item.created}}"></two-line-date></td>
-					<td class="col-md-1"><two-line-date date="{{item.modified}}"></two-line-date></td>
+					<td class="col-md-1">{{item.created | mydate}}</td>
+					<td class="col-md-1">{{item.modified | mydate}}</td>
 					<td class="col-md-3">{{item.description}}</td>
 			    </tr>
 		    </tbody>

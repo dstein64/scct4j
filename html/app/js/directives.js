@@ -9,13 +9,4 @@ directives.directive('navigation', function() {
     };
 });
 
-directives.directive('twoLineDate', function() {
-    return {
-       restrict: 'E',
-       template: '{{date | date : "M/d/yyyy"}}<br>{{date | date : "shortTime"}}',
-       scope: {
-          date: '@'
-       }
-    };
-});
 
