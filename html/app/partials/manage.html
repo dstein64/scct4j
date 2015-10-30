@@ -11,6 +11,7 @@
                 <option value="id">Id</option>
                 <option value="created">Created</option>
                 <option value="modified">Modified</option>
+                <option value="priority">Priority</option>
                 <option value="user">User</option>
             </select>
             <input type="checkbox" id="descending" value="-"
@@ -31,6 +32,7 @@
 					<th>User</th>
 					<th>Created</th>
 					<th>Modified</th>
+					<th>Priority</th>
 					<th>Description</th>
 				</tr>
 			</thead>
@@ -41,6 +43,7 @@
 					<td class="col-md-1">{{item.user}}</td>
 					<td class="col-md-1">{{item.created | mydate}}</td>
 					<td class="col-md-1">{{item.modified | mydate}}</td>
+					<td class="col-md-1">{{item.priority}}</td>
 					<td class="col-md-3">{{item.description}}</td>
 			    </tr>
 		    </tbody>
