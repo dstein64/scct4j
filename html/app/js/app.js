@@ -18,9 +18,16 @@ app.config(['$routeProvider',
           templateUrl: 'partials/submit.html',
           controller: 'SubmitController'
       }).
-      when('/items/:item', {
+      when('/item/:item', {
           templateUrl: 'partials/item.html',
           controller: 'ItemController'
+      }).
+      when('/update/:item', {
+          templateUrl: 'partials/update.html',
+          controller: 'UpdateController'
+      }).
+      when ('/', {
+          redirectTo: '/manage'
       }).
       otherwise({
           redirectTo: '/manage'
