@@ -4,8 +4,32 @@ var controllers = angular.module('controllers', []);
 
 controllers.controller('SubmitController', function($scope, $http) {
     $scope.name = 'submit';
+    $scope.files = [];
+    $scope.counter = 0;
+    $scope.change = function(file) {
+        console.log($scope.f);
+        $scope.files.push(file.files[0]);
+        $scope.$apply();
+        $scope.f = "";
+    };
     $scope.labelCols = 2;
     $scope.valueCols = 6;
+    
+    $scope.submit = function() {
+        var fd = new FormData();
+        for (var i = 0; i < $scope.files.length; i++) {
+            fd.append('file', $scope.files[i]);
+        }
+        
+        
+        $http.post('/item/0', fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).then(function(response) {
+            console.log('hello');
+        });
+    };
+    
 });
 
 controllers.controller('ManageController', function($scope, $http) {

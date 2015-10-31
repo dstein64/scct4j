@@ -1,5 +1,5 @@
 <div class="container">
-	<form class="form-horizontal" method="post" action="/item/0" enctype="multipart/form-data">
+	<form class="form-horizontal">
 	  <div class="form-group">
 	    <label for="item" class="col-md-{{labelCols}} control-label">
 	       Item
@@ -12,12 +12,17 @@
       
     
       <div class="form-group">
-		<input id="tmp" type="file" name="files[]" multiple required>
+		<input ng-model="f" id="tmp" type="file" name="f"
+		       onchange="angular.element(this).scope().change(this)">
+      </div>
+      
+      <div ng-repeat="file in files">
+        {{file.name}} X
       </div>
 
-		<div class="form-group">
+	  <div class="form-group">
 	    <div class="col-md-offset-{{labelCols}} col-md-{{valueCols}}">
-	      <button type="submit" class="btn btn-primary">
+	      <button type="submit" class="btn btn-primary" ng-click="submit()">
 	        <i class="glyphicon glyphicon-upload"></i>
 	        Submit
 	      </button>

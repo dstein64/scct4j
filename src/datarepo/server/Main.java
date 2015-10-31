@@ -66,6 +66,9 @@ public class Main extends Thread {
         ctx.addServletMapping("/", "default");
         ctx.addServletMapping("*.jsp", "jsp");
         ctx.addServletMapping("*.jspx", "jsp");
+        
+        // we received multi-part data uploads
+        ctx.setAllowCasualMultipartParsing(true);
 
         // Sessions
         ctx.setSessionTimeout(30);
