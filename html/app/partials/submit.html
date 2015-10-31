@@ -12,12 +12,31 @@
       
     
       <div class="form-group">
-		<input ng-model="f" id="tmp" type="file" name="f"
-		       onchange="angular.element(this).scope().change(this)">
-      </div>
-      
-      <div ng-repeat="file in files">
-        {{file.name}} X
+        <div class="col-md-offset-{{labelCols}} col-md-6">
+		  <table class="table table-striped">
+            <tbody>
+                <tr ng-repeat="file in files">
+                  <td class="col-md-4">
+                    {{file.name}}
+                  </td>
+                  <td class="col-md-2">
+                      <button class="btn btn-warning pull-right" ng-click="files.splice($index, 1)">
+                          <i class="glyphicon glyphicon-ban-circle"></i>
+                          Cancel
+                      </button>
+                  </td>
+                </tr>
+            </tbody>
+          </table>
+          
+          <span class="btn btn-success btn-file">
+            <i class="glyphicon glyphicon-plus"></i>
+            Add Files
+            <input id="tmp" type="file"
+               onchange="angular.element(this).scope().change(this); this.value = null;">
+          </span> 
+		  
+	    </div>
       </div>
 
 	  <div class="form-group">

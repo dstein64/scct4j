@@ -5,12 +5,11 @@ var controllers = angular.module('controllers', []);
 controllers.controller('SubmitController', function($scope, $http) {
     $scope.name = 'submit';
     $scope.files = [];
-    $scope.counter = 0;
     $scope.change = function(file) {
-        console.log($scope.f);
-        $scope.files.push(file.files[0]);
-        $scope.$apply();
-        $scope.f = "";
+        if (file.value) {
+            $scope.files.push(file.files[0]);
+            $scope.$apply();   
+        }
     };
     $scope.labelCols = 2;
     $scope.valueCols = 6;
@@ -21,12 +20,11 @@ controllers.controller('SubmitController', function($scope, $http) {
             fd.append('file', $scope.files[i]);
         }
         
-        
         $http.post('/item/0', fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         }).then(function(response) {
-            console.log('hello');
+            alert('thanks');
         });
     };
     
