@@ -4,6 +4,8 @@ var controllers = angular.module('controllers', []);
 
 controllers.controller('SubmitController', function($scope, $http) {
     $scope.name = 'submit';
+    $scope.labelCols = 2;
+    $scope.valueCols = 6;
 });
 
 controllers.controller('ManageController', function($scope, $http) {
