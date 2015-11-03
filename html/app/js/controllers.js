@@ -14,13 +14,25 @@ controllers.controller('SubmitController', function($scope, $http) {
     $scope.labelCols = 2;
     $scope.valueCols = 6;
     
+    $scope.filesOffset = function() {
+        if ($scope.files.length <= 0)
+            return 'col-md-offset-' + $scope.labelCols;
+        else
+            return '';
+    };
+    
     $scope.submit = function() {
         var fd = new FormData();
+        
+        fd.append('name', $scope.item.name);
+        fd.append('priority', $scope.item.priority);
+        fd.append('description', $scope.item.description);
+        
         for (var i = 0; i < $scope.files.length; i++) {
-            fd.append('file', $scope.files[i]);
+            fd.append('files[]', $scope.files[i]);
         }
         
-        $http.post('/item/0', fd, {
+        $http.post('/item/', fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         }).then(function(response) {

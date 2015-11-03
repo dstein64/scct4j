@@ -3,6 +3,7 @@ package daterepo.servlets;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,7 +11,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -34,7 +37,6 @@ public class ItemServlet extends HttpServlet {
         JSONObject object = new JSONObject();
         object.put("name", "Item " + id.toString());
         object.put("id", id);
-        object.put("user", "dan");
         object.put("created", System.currentTimeMillis());
         object.put("modified", System.currentTimeMillis());
         object.put("priority", 75);
@@ -51,9 +53,22 @@ public class ItemServlet extends HttpServlet {
     }
     
     // POST creates a new item
+    // It receives Content-Type: multipart/form-data
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        String name = IOUtils.toString(req.getPart("name").getInputStream());
+        String priority = IOUtils.toString(req.getPart("priority").getInputStream());
+        String description = IOUtils.toString(req.getPart("description").getInputStream());
+        
+        Collection<Part> parts = req.getParts();
+        for (Part p : parts) {
+            if (p.getName().equals("files[]")) {
+                System.out.println(p.getContentType());
+                System.out.println(p.getSubmittedFileName());
+                System.out.println(p.getSize());
+                System.out.println();
+            }
+        }
         System.out.println("HELLO");
     }
     
