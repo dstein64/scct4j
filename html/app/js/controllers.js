@@ -2,7 +2,7 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('SubmitController', function($scope, $http) {
+controllers.controller('SubmitController', function($scope, $http, $location) {
     $scope.name = 'submit';
     $scope.files = [];
     $scope.change = function(file) {
@@ -36,7 +36,7 @@ controllers.controller('SubmitController', function($scope, $http) {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         }).then(function(response) {
-            alert('thanks');
+            $location.path('/');
         });
     };
     

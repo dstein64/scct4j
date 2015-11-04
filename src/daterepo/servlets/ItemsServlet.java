@@ -4,12 +4,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import datarepo.Item;
+import datarepo.ItemManager;
 
 /**
  *  Endpoint for retrieving all items
@@ -18,32 +25,28 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ItemsServlet extends HttpServlet {
     
-    private static final int FILEBUFFERSIZE = 1024;
+    private ItemManager itemManager = ItemManager.theItemManager();
     
     // GET retrieves an existing item
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletOutputStream out = null;
-        InputStream in = null;
-        try {
-            out = resp.getOutputStream();
-            in = new FileInputStream(new File("items.json"));
-            
-            byte[] bytes = new byte[FILEBUFFERSIZE];
-            int bytesRead;
-
-            resp.setContentType("application/json");
-
-            while ((bytesRead = in.read(bytes)) != -1) {
-                out.write(bytes, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            throw e;
-        } finally {
-            if (in != null)
-                in.close();
-            if (out != null)
-                out.close();
+        ServletOutputStream out = resp.getOutputStream();
+        
+        List<Item> items = itemManager.getAllItems();
+        
+        JSONArray array = new JSONArray();
+        for (Item item : items) {
+            JSONObject object = new JSONObject();
+            object.put("name", item.name);
+            object.put("id", item.id);
+            object.put("created", item.created);
+            object.put("modified", item.modified);
+            object.put("priority", item.priority);
+            object.put("description", item.description);
+            array.put(object);
         }
+        
+        out.write(array.toString().getBytes());
+        out.close();
     }
 }
