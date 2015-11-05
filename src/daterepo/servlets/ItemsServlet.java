@@ -1,10 +1,9 @@
 package daterepo.servlets;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -15,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import datarepo.DatabaseManager;
 import datarepo.Item;
 import datarepo.ItemManager;
+import datarepo.MyLogger;
 
 /**
  *  Endpoint for retrieving all items
@@ -30,9 +31,24 @@ public class ItemsServlet extends HttpServlet {
     // GET retrieves an existing item
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+        try {
+            DatabaseManager.theDatabaseManager();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         ServletOutputStream out = resp.getOutputStream();
         
-        List<Item> items = itemManager.getAllItems();
+        List<Item> items;
+        try {
+            items = itemManager.getAllItems();
+        } catch (SQLException e) {
+            MyLogger.log.log(Level.SEVERE, "SQL Error", e);
+            resp.setStatus(500);
+            return;
+        }
         
         JSONArray array = new JSONArray();
         for (Item item : items) {

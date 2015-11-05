@@ -37,6 +37,8 @@ controllers.controller('SubmitController', function($scope, $http, $location) {
             headers: {'Content-Type': undefined}
         }).then(function(response) {
             $location.path('/');
+        }, function(response) {
+            alert('Error Submitting');
         });
     };
     

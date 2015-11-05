@@ -1,7 +1,6 @@
 package datarepo;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,39 +12,26 @@ public class Item {
     public long modified;
     public int priority;
     public String description;
-    public List<BigInteger> files = new ArrayList<BigInteger>(); // IDs of files
+    public List<BigInteger> files; // IDs of files
     
     private Item(Builder builder) throws IOException {
         name = builder.name;
         id = builder.id;
-        created = System.currentTimeMillis();
-        modified = created;
+        created = builder.created;
+        modified = builder.modified;
         priority = builder.priority;
         description = builder.description;
-        // save files
-        FileManager fileManager = FileManager.theFileManager();
-        for (PendingFile file : builder.files) {
-            BigInteger id = fileManager.addFile(file);
-            files.add(id);
-        }
-    }
-    
-    /**
-     * A PendingFile gets saved by the ItemManager/FileManager
-     */
-    public static class PendingFile {
-        public String name;
-        public String contentType;
-        public InputStream stream;
-        public long size;
+        files = builder.files;
     }
     
     public static class Builder {
-        private String name;
-        private BigInteger id;
-        private int priority;
-        private String description;
-        private List<PendingFile> files;
+        public String name;
+        public BigInteger id;
+        public long created;
+        public long modified;
+        public int priority;
+        public String description;
+        public List<BigInteger> files = new ArrayList<BigInteger>();
         
         public Builder setName(String name) {
             this.name = name;
@@ -54,6 +40,16 @@ public class Item {
         
         public Builder setId(BigInteger id) {
             this.id = id;
+            return this;
+        }
+        
+        public Builder setCreated(long created) {
+            this.created = created;
+            return this;
+        }
+        
+        public Builder setModified(long modified) {
+            this.modified = modified;
             return this;
         }
         
@@ -67,8 +63,8 @@ public class Item {
             return this;
         }
         
-        public Builder setFiles(List<PendingFile> files) {
-            this.files = files;
+        public Builder addFile(BigInteger file) {
+            this.files.add(file);
             return this;
         }
         

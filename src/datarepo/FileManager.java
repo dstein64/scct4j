@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
-import datarepo.Item.PendingFile;
-
 public class FileManager {
-    private String DIRECTORY = "repofiles";
+    private String DIRECTORY = "files";
     
     public FileManager() {
         new File(DIRECTORY).mkdirs();
@@ -23,7 +22,9 @@ public class FileManager {
     
     public synchronized BigInteger addFile(PendingFile file) throws IOException {
         BigInteger id = counter;
-        Files.copy(file.stream, Paths.get(DIRECTORY, id.toString(10)));
+        Files.copy(file.stream,
+                Paths.get(DIRECTORY, id.toString(10)),
+                StandardCopyOption.REPLACE_EXISTING);
         file.stream.close();
         file2name.put(counter, file.name);
         counter = counter.add(BigInteger.ONE);

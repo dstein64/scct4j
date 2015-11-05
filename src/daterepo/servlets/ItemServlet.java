@@ -2,10 +2,12 @@ package daterepo.servlets;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -21,8 +23,9 @@ import org.json.JSONObject;
 import datarepo.FileManager;
 import datarepo.Item;
 import datarepo.Item.Builder;
-import datarepo.Item.PendingFile;
 import datarepo.ItemManager;
+import datarepo.MyLogger;
+import datarepo.PendingFile;
 
 /**
  *  Endpoint for creating/retrieving/updating/deleting a single item
@@ -38,13 +41,24 @@ public class ItemServlet extends HttpServlet {
         return new BigInteger(pathInfo, 10);
     }
     
+    private void genericicHandleError(Exception e, HttpServletResponse resp) {
+        MyLogger.log.log(Level.SEVERE, "Error", e);
+        resp.setStatus(500);
+    }
+    
     // GET retrieves an existing item
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BigInteger id = getId(req);
         ServletOutputStream out = resp.getOutputStream();
         
-        Item item = itemManager.getItem(id);
+        Item item;
+        try {
+            item = itemManager.getItem(id);
+        } catch (SQLException e) {
+            genericicHandleError(e, resp);
+            return;
+        }
         
         JSONObject object = new JSONObject();
         object.put("name", item.name);
@@ -91,20 +105,32 @@ public class ItemServlet extends HttpServlet {
             }
         }
         
+        long time = System.currentTimeMillis();
         Builder builder = new Builder()
                 .setName(name)
+                .setCreated(time)
+                .setModified(time)
                 .setDescription(description)
-                .setPriority(priority)
-                .setFiles(files);
+                .setPriority(priority);
         
-        itemManager.addItem(builder);
+        try {
+            itemManager.addItem(builder, files);
+        } catch (SQLException e) {
+            genericicHandleError(e, resp);
+            return;
+        }
     }
     
     // DELETE removes an item
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BigInteger id = getId(req);
-        itemManager.deleteItem(id);
+        try {
+            itemManager.deleteItem(id);
+        } catch (SQLException e) {
+            genericicHandleError(e, resp);
+            return;
+        }
     }
     
     // PUT updates an existing item
