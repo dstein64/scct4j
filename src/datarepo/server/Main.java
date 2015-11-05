@@ -12,8 +12,11 @@ import org.apache.catalina.LifecycleState;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.jasper.runtime.JspFactoryImpl;
+import org.apache.tomcat.util.descriptor.web.FilterDef;
+import org.apache.tomcat.util.descriptor.web.FilterMap;
 
 import datarepo.MyLogger;
+import datarepo.filters.MyFilter;
 import daterepo.servlets.FileServlet;
 import daterepo.servlets.ItemServlet;
 import daterepo.servlets.ItemsServlet;
@@ -104,7 +107,16 @@ public class Main extends Thread {
         
         // Custom Filters
         
+        FilterDef def = new FilterDef();
+        def.setFilterClass(MyFilter.class.getName());
+        String filterName = "myFilter";
+        def.setFilterName(filterName);
+        ctx.addFilterDef(def);
         
+        FilterMap map = new FilterMap();
+        map.setFilterName(filterName);
+        map.addURLPattern("*");
+        ctx.addFilterMap(map);
         
         try {
             tomcat.start();
