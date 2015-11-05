@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.derby.tools.ij;
 
@@ -95,7 +96,9 @@ public class DatabaseManager {
             String arg = args[0];
             switch (arg) {
                 case "init":
+                    // this wipes any existing database, and initializes a new one
                     //OutputStream os = new NullOutputStream();
+                    FileUtils.deleteDirectory(new File("db/derby"));
                     theDatabaseManager().init(System.out);
                     break;
                 default:

@@ -1,7 +1,9 @@
-<nav class="navbar navbar-default navbar-static-top">
-	<a class="navbar-brand" href="/app/#/">CHIA Staging Repository</a>
-	<ul class="nav navbar-nav" ng-controller="NavigationController">
-		<li ng-class="{ active:isActive('manage') }"><a href="/app/#/manage">Manage</a></li>
-		<li ng-class="{ active:isActive('submit') }"><a href="/app/#/submit">Submit</a></li>
-	</ul>
+<nav class="container-fluid navbar navbar-default navbar-static-top">
+	<a class="navbar-brand hidden-xs" href="/app/#/">CHIA Staging Repository</a>
+	<div>
+	   <ul class="nav navbar-nav" ng-controller="NavigationController">
+         <li ng-class="{ active:isActive('manage') }"><a href="/app/#/manage">Manage</a></li>
+         <li ng-class="{ active:isActive('submit') }"><a href="/app/#/submit">Submit</a></li>
+       </ul>
+	</div>
 </nav>

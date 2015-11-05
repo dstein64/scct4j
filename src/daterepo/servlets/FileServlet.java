@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -13,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 
+import datarepo.FileItem;
 import datarepo.FileManager;
+import datarepo.Utils;
 
 /**
  *  Endpoint for retrieving files
@@ -34,7 +37,14 @@ public class FileServlet extends HttpServlet {
         BigInteger id = getId(req);
         ServletOutputStream out = resp.getOutputStream();
         
-        String filename = fileManager.name(id);
+        String filename;
+        try {
+            FileItem f = fileManager.fidToFileItem(id);
+            filename = f.name;
+        } catch (SQLException e) {
+            Utils.genericicHandleError(e, resp);
+            return;
+        }
         File file = fileManager.getFile(id);
         
         resp.setHeader("Content-Disposition", "attachment; filename=" + filename + ";");

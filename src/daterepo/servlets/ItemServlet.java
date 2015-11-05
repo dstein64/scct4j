@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -18,14 +16,16 @@ import javax.servlet.http.Part;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import datarepo.FileItem;
 import datarepo.FileManager;
 import datarepo.Item;
 import datarepo.Item.Builder;
 import datarepo.ItemManager;
-import datarepo.MyLogger;
 import datarepo.PendingFile;
+import datarepo.Utils;
 
 /**
  *  Endpoint for creating/retrieving/updating/deleting a single item
@@ -41,11 +41,6 @@ public class ItemServlet extends HttpServlet {
         return new BigInteger(pathInfo, 10);
     }
     
-    private void genericicHandleError(Exception e, HttpServletResponse resp) {
-        MyLogger.log.log(Level.SEVERE, "Error", e);
-        resp.setStatus(500);
-    }
-    
     // GET retrieves an existing item
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -56,7 +51,7 @@ public class ItemServlet extends HttpServlet {
         try {
             item = itemManager.getItem(id);
         } catch (SQLException e) {
-            genericicHandleError(e, resp);
+            Utils.genericicHandleError(e, resp);
             return;
         }
         
@@ -69,10 +64,16 @@ public class ItemServlet extends HttpServlet {
         object.put("description", item.description);
         
         JSONArray array = new JSONArray();
-        List<String> files = Arrays.asList("CLIO.Height.Data Doc.Template.xlsx", "CLIO.Height.xlsx", "height.pdf");
         for (BigInteger fileId : item.files) {
             JSONObject file = new JSONObject();
-            file.put("name", fileManager.name(fileId));
+            try {
+                FileItem f = fileManager.fidToFileItem(fileId);
+                file.put("name", f.name);
+                file.put("size", f.size);
+            } catch (JSONException | SQLException e) {
+                Utils.genericicHandleError(e, resp);
+                return;
+            }
             file.put("id", fileId);
             array.put(file);
         }
@@ -116,7 +117,7 @@ public class ItemServlet extends HttpServlet {
         try {
             itemManager.addItem(builder, files);
         } catch (SQLException e) {
-            genericicHandleError(e, resp);
+            Utils.genericicHandleError(e, resp);
             return;
         }
     }
@@ -128,7 +129,7 @@ public class ItemServlet extends HttpServlet {
         try {
             itemManager.deleteItem(id);
         } catch (SQLException e) {
-            genericicHandleError(e, resp);
+            Utils.genericicHandleError(e, resp);
             return;
         }
     }

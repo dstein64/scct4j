@@ -18,7 +18,7 @@ public class ItemManager {
         Connection conn = DatabaseManager.theConnection();
         // "ID" has to be upper case or doesn't work
         PreparedStatement ps =
-                conn.prepareStatement("INSERT INTO items values (DEFAULT, ?, ?, ?, ?, ?)", new String[] {"ID"});
+                conn.prepareStatement("INSERT INTO items VALUES (DEFAULT, ?, ?, ?, ?, ?)", new String[] {"ID"});
         ps.setString(1, builder.name);
         ps.setLong(2, builder.created);
         ps.setLong(3, builder.modified);
@@ -39,24 +39,25 @@ public class ItemManager {
         // save files
         FileManager fileManager = FileManager.theFileManager();
         for (PendingFile file : pendingFiles) {
-            BigInteger fid = fileManager.addFile(file);
-            
-            builder.addFile(id);
-            // TODO: save in itemfiles table
+            BigInteger fid = fileManager.addFile(file, id);
+            //builder.addFile(id);
         }
     }
     
     public synchronized void deleteItem(BigInteger id) throws SQLException, IOException {
-        // TODO: Delete files for item
-//        for (BigInteger fileId : item.files) {
-//            FileManager.theFileManager().delete(fileId);
-//        }
+       // TODO: throw error if problem deleting
+        
+        FileManager fm = FileManager.theFileManager();
+        List<BigInteger> fids = fm.itemFiles(id);
+        for (BigInteger fid : fids) {
+            fm.delete(fid);
+        }
+        
         Connection conn = DatabaseManager.theConnection();
         PreparedStatement ps =
                 conn.prepareStatement("DELETE FROM items WHERE id = ?");
         ps.setBigDecimal(1, new BigDecimal(id));
         ps.execute();
-        // TODO: throw error if item not deleted
     }
     
     /**
@@ -66,14 +67,21 @@ public class ItemManager {
      */
     private Item rsToItem(ResultSet rs) throws SQLException, IOException {
         // Row: id,name,created,modified,priority,description
-        return new Builder()
-                .setId(rs.getBigDecimal("id").toBigInteger())
+        BigInteger id = rs.getBigDecimal("id").toBigInteger();
+        Builder builder = new Builder()
+                .setId(id)
                 .setName(rs.getString("name"))
                 .setCreated(rs.getLong("created"))
                 .setModified(rs.getLong("modified"))
                 .setPriority(rs.getInt("priority"))
-                .setDescription(DatabaseManager.clobToString(rs.getClob("description")))
-                .build();
+                .setDescription(DatabaseManager.clobToString(rs.getClob("description")));
+        
+        List<BigInteger> fids = FileManager.theFileManager().itemFiles(id);
+        for (BigInteger fid : fids) {
+            builder.addFile(fid);
+        }
+        
+        return builder.build();
     }
     
     public synchronized Item getItem(BigInteger id) throws SQLException, IOException {

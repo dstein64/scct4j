@@ -20,7 +20,8 @@
 	    
 	    <dt>Files</dt>
         <dd>
-            <ul class="list-unstyled">
+            <span ng-show="item.files.length == 0">&#216;</span>
+            <ul ng-show="item.files.length > 0" class="list-unstyled">
 		        <li ng-repeat="file in item.files">
 		            <a href="/file/{{file.id}}">{{file.name}}</a>
 		        </li>
