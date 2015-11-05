@@ -7,8 +7,7 @@ var app = angular.module("app", [
   'filters'
 ]);
 
-app.config(['$routeProvider',
-  function($routeProvider) {
+app.config(function($routeProvider) {
     $routeProvider.
       when('/manage', {
           templateUrl: 'partials/manage.html',
@@ -32,4 +31,4 @@ app.config(['$routeProvider',
       otherwise({
           redirectTo: '/manage'
       });
-}]);
+});
