@@ -3,6 +3,7 @@ package datarepo;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ import java.util.List;
 import datarepo.Item.Builder;
 
 public class ItemManager {
-    public synchronized void addItem(Builder builder, List<PendingFile> pendingFiles) throws IOException, SQLException {
+    public synchronized void addItem(Builder builder, List<PendingFile> pendingFiles) throws IOException, SQLException, GeneralSecurityException {
         Connection conn = DatabaseManager.theConnection();
         // "ID" has to be upper case or doesn't work
         PreparedStatement ps =
@@ -46,7 +47,7 @@ public class ItemManager {
     public synchronized void modifyItem(BigInteger id,
             Builder builder,
             List<PendingFile> pendingFiles,
-            List<BigInteger> removeFiles) throws SQLException, IOException {
+            List<BigInteger> removeFiles) throws SQLException, IOException, GeneralSecurityException {
         Connection conn = DatabaseManager.theConnection();
         PreparedStatement ps =
                 conn.prepareStatement("UPDATE items SET name = ?, priority = ?, description = ?, modified = ? WHERE id = ?");
@@ -68,7 +69,7 @@ public class ItemManager {
         }
     }
     
-    public synchronized void deleteItem(BigInteger id) throws SQLException, IOException {
+    public synchronized void deleteItem(BigInteger id) throws SQLException, IOException, GeneralSecurityException {
        // TODO: throw error if problem deleting
         
         FileManager fm = FileManager.theFileManager();

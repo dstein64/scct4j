@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ public class FileManager {
         DIRECTORY.mkdirs();
     }
     
-    public synchronized BigInteger addFile(PendingFile file, BigInteger itemId) throws IOException, SQLException {
+    public synchronized BigInteger addFile(PendingFile file, BigInteger itemId) throws IOException, SQLException, GeneralSecurityException {
         Connection conn = DatabaseManager.theConnection();
         PreparedStatement ps =
                 conn.prepareStatement("INSERT INTO files VALUES (DEFAULT, ?, ?, ?)", new String[] {"ID"});
@@ -68,7 +69,7 @@ public class FileManager {
         }
     }
     
-    public File getFile(BigInteger fid) throws FileNotFoundException {
+    public File getFile(BigInteger fid) throws GeneralSecurityException {
         return Utils.secureFile(DIRECTORY, fid.toString());
     }
     
@@ -96,8 +97,9 @@ public class FileManager {
      * @param fid
      * @throws SQLException
      * @throws IOException
+     * @throws GeneralSecurityException 
      */
-    public synchronized void delete(BigInteger fid) throws SQLException, IOException {
+    public synchronized void delete(BigInteger fid) throws SQLException, IOException, GeneralSecurityException {
         // TODO: the following should be done in one transaction
         Connection conn = DatabaseManager.theConnection();
         PreparedStatement ps = conn.prepareStatement("DELETE FROM itemfiles WHERE file = ?");

@@ -2,6 +2,7 @@ package daterepo.servlets;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +133,7 @@ public class ItemServlet extends HttpServlet {
         List<PendingFile> files = requestToPendingFiles(req);
         try {
             itemManager.addItem(builder, files);
-        } catch (SQLException e) {
+        } catch (SQLException | GeneralSecurityException e) {
             Utils.genericicHandleError(e, resp);
             return;
         }
@@ -144,7 +145,7 @@ public class ItemServlet extends HttpServlet {
         BigInteger id = getId(req);
         try {
             itemManager.deleteItem(id);
-        } catch (SQLException e) {
+        } catch (SQLException | GeneralSecurityException e) {
             Utils.genericicHandleError(e, resp);
             return;
         }
@@ -170,7 +171,7 @@ public class ItemServlet extends HttpServlet {
         try {
             // TODO: have to get the list of files to remove
             itemManager.modifyItem(id, builder, files, removeFiles);
-        } catch (SQLException e) {
+        } catch (SQLException | GeneralSecurityException e) {
             Utils.genericicHandleError(e, resp);
             return;
         }

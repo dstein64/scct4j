@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -38,14 +39,15 @@ public class FileServlet extends HttpServlet {
         ServletOutputStream out = resp.getOutputStream();
         
         String filename;
+        File file;
         try {
             FileItem f = fileManager.fidToFileItem(id);
             filename = f.name;
-        } catch (SQLException e) {
+            file = fileManager.getFile(id);
+        } catch (SQLException | GeneralSecurityException e) {
             Utils.genericicHandleError(e, resp);
             return;
         }
-        File file = fileManager.getFile(id);
         
         resp.setHeader("Content-Disposition", "attachment; filename=" + filename + ";");
         

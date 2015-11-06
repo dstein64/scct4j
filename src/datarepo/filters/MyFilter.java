@@ -29,6 +29,12 @@ public class MyFilter implements Filter {
             HttpServletRequest request = (HttpServletRequest) servletRequest;
             HttpServletResponse response = (HttpServletResponse) servletResponse;
             
+            // No caching unless explicitly turned on
+            // (IE was using cache for requests to, e.g., /items, which was causing problems
+            response.setHeader("Cache-Control", "no-store, must-revalidate, private, no-cache");
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Expires", "0");
+            
             if ("/".equals(request.getRequestURI())) {
                 response.sendRedirect("/app");
                 return;

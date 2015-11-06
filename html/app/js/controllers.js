@@ -2,9 +2,14 @@
 
 var controllers = angular.module('controllers', []);
 
+// String#startsWith not in IE yet
+var startsWith = function(str, start) {
+    return str.indexOf(start) === 0;
+};
+
 // SubmitController and submit.html are used for submitting *and* updating
 controllers.controller('SubmitController', function($scope, $http, $location, $routeParams) {
-    $scope.updateFlag = $location.$$url.startsWith("/update/");
+    $scope.updateFlag = startsWith($location.$$url, "/update/");
     
     if ($scope.updateFlag) {
         $scope.item = {};
@@ -69,17 +74,32 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
         return fd;
     }
     
+    var formHasChanges = function() {
+        var hasChanges = !document.getElementById('form').classList.contains('ng-pristine');
+        hasChanges = hasChanges || ($scope.files.length > 0);
+        return hasChanges;
+    }
+    
+    var offLocationChange = $scope.$on('$locationChangeStart', function(event, next, current) {
+        if (formHasChanges() && !confirm("Your changes will be lost.\nContinue?")) {
+            event.preventDefault();
+        }
+    });
+    
     // angular also has form validation functionality, but using what's built-in to javascript
+    var forceChangePage = function(path) {
+        offLocationChange();
+        $location.path(path);
+    };
     
     $scope.submit = function() {
         if (document.getElementById('form').checkValidity()) {
             var fd = $scope.getFormData();
-            
             $http.post('/item/', fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             }).then(function(response) {
-                $location.path('/');
+                forceChangePage('/');
             }, function(response) {
                 alert('Error Submitting');
             });
@@ -94,7 +114,7 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             }).then(function(response) {
-                $location.path('/item/' + id);
+                forceChangePage('/item/' + id);
             }, function(response) {
                 alert('Error Saving');
             });
