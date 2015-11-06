@@ -1,33 +1,37 @@
 <div class="container">
-    <dl class="dl-horizontal">
-        <dt>Name</dt>
-        <dd>{{item.name}}</dd>
-    
-	    <dt>ID</dt>
-	    <dd>{{item.id}}</dd>
-        
-        <dt>Created</dt>
-        <dd>{{item.created | date : 'short'}}</dd>
-        
-        <dt>Modified</dt>
-        <dd>{{item.modified | date : 'short'}}</dd>
-        
-        <dt>Priority</dt>
-        <dd>{{item.priority}}</dd>
+    <div class="row col-md-12">
+	    <dl class="dl-horizontal col-md-10">
+	        <dt>Name</dt>
+	        <dd>{{item.name}}</dd>
 	    
-	    <dt>Description</dt>
-	    <dd>{{item.description}}</dd>
-	    
-	    <dt>Files</dt>
-        <dd>
-            <span ng-show="item.files.length == 0">&#216;</span>
-            <ul ng-show="item.files.length > 0" class="list-unstyled">
-		        <li ng-repeat="file in item.files">
-		            <a href="/file/{{file.id}}">{{file.name}}</a>
-		        </li>
-		    </ul>
-        </dd>
-    </dl>
+		    <dt>ID</dt>
+		    <dd>{{item.id}}</dd>
+	        
+	        <dt>Created</dt>
+	        <dd>{{item.created | date : 'short'}}</dd>
+	        
+	        <dt>Modified</dt>
+	        <dd>{{item.modified | date : 'short'}}</dd>
+	        
+	        <dt>Priority</dt>
+	        <dd>{{item.priority}}</dd>
+		    
+		    <dt>Description</dt>
+		    <dd>
+		      <pre class="simple-pre">{{item.description}}</pre>
+		    </dd>
+		    
+		    <dt>Files</dt>
+	        <dd>
+	            <span ng-show="item.files.length == 0">&#216;</span>
+	            <ul ng-show="item.files.length > 0" class="list-unstyled">
+			        <li ng-repeat="file in item.files">
+			            <a href="/file/{{file.id}}">{{file.name}}</a>
+			        </li>
+			    </ul>
+	        </dd>
+	    </dl>
+	</div>
     <div class="row">
         <button ng-click="update()" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Update</button>
         <button ng-click="del()" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>

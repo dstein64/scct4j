@@ -15,6 +15,7 @@ import org.apache.jasper.runtime.JspFactoryImpl;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
 
+import datarepo.DatabaseManager;
 import datarepo.MyLogger;
 import datarepo.filters.MyFilter;
 import daterepo.servlets.FileServlet;
@@ -225,11 +226,14 @@ public class Main extends Thread {
     														"application/wspolicy+xml", "Z", "application/x-compress", "z",
     														"application/x-compress", "zip", "application/zip" };
     
-    public static void main(String[] args) throws Exception{
-        
+    public static void main(String[] args) throws Exception {
         int port = 8765;
         if(args.length!=0)
             port = Integer.parseInt(args[0]);
+        
+        // Don't wait for lazy load, so that if startNetworkServer is enabled,
+        // we can access right away
+        DatabaseManager.theDatabaseManager();
         
         new Main(port).start();
     }

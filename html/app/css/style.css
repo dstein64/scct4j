@@ -18,3 +18,14 @@
     cursor: inherit;
     display: block;
 }
+
+.simple-pre {
+	background-color: inherit;
+	border: initial;
+	border-radius: initial;
+	padding: initial;
+	margin: initial;
+	font-size: inherit;
+	font-family: inherit;
+}
+

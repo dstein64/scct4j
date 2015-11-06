@@ -83,18 +83,32 @@ public class ItemServlet extends HttpServlet {
         out.close();
     }
     
-    // POST creates a new item
-    // It receives Content-Type: multipart/form-data
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = IOUtils.toString(req.getPart("name").getInputStream());
-        String _priority = IOUtils.toString(req.getPart("priority").getInputStream());
+    private String partToString(Part p, HttpServletRequest req) throws IOException, ServletException {
+        return IOUtils.toString(p.getInputStream());
+    }
+    
+    /**
+     * Given a POST/PUT request, returns the corresponding Builder object.
+     * Doesn't set every field. For example, created/modified should be set by the caller
+     * @throws ServletException 
+     * @throws IOException 
+     */
+    private Builder requestToBuilder(HttpServletRequest req) throws IOException, ServletException {
+        String name = partToString(req.getPart("name"), req);
+        String _priority = partToString(req.getPart("priority"), req);
         int priority = Integer.parseInt(_priority);
-        String description = IOUtils.toString(req.getPart("description").getInputStream());
+        String description = partToString(req.getPart("description"), req);
         
+        Builder builder = new Builder()
+                .setName(name)
+                .setDescription(description)
+                .setPriority(priority);
+        return builder;
+    }
+    
+    private List<PendingFile> requestToPendingFiles(HttpServletRequest req) throws IOException, ServletException {
         List<PendingFile> files = new ArrayList<PendingFile>();
-        Collection<Part> parts = req.getParts();
-        for (Part p : parts) {
+        for (Part p : req.getParts()) {
             if (p.getName().equals("files[]")) {
                 PendingFile file = new PendingFile();
                 file.name = p.getSubmittedFileName();
@@ -105,15 +119,18 @@ public class ItemServlet extends HttpServlet {
                 files.add(file);
             }
         }
-        
+        return files;
+    }
+    
+    // POST creates a new item
+    // It receives Content-Type: multipart/form-data
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long time = System.currentTimeMillis();
-        Builder builder = new Builder()
-                .setName(name)
+        Builder builder = requestToBuilder(req)
                 .setCreated(time)
-                .setModified(time)
-                .setDescription(description)
-                .setPriority(priority);
-        
+                .setModified(time);
+        List<PendingFile> files = requestToPendingFiles(req);
         try {
             itemManager.addItem(builder, files);
         } catch (SQLException e) {
@@ -138,6 +155,25 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BigInteger id = getId(req);
-        // TODO: Update item
+        long time = System.currentTimeMillis();
+        // Don't need to set "created". We keep the original "created" date
+        Builder builder = requestToBuilder(req)
+                .setModified(time);
+        List<PendingFile> files = requestToPendingFiles(req);
+        
+        List<BigInteger> removeFiles = new ArrayList<BigInteger>();
+        for (Part p : req.getParts()) {
+            if (p.getName().equals("removefiles[]")) {
+                removeFiles.add(new BigInteger(partToString(p, req)));
+            }
+        }
+        
+        try {
+            // TODO: have to get the list of files to remove
+            itemManager.modifyItem(id, builder, files, removeFiles);
+        } catch (SQLException e) {
+            Utils.genericicHandleError(e, resp);
+            return;
+        }
     }
 }

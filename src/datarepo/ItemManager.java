@@ -40,7 +40,31 @@ public class ItemManager {
         FileManager fileManager = FileManager.theFileManager();
         for (PendingFile file : pendingFiles) {
             BigInteger fid = fileManager.addFile(file, id);
-            //builder.addFile(id);
+        }
+    }
+    
+    public synchronized void modifyItem(BigInteger id,
+            Builder builder,
+            List<PendingFile> pendingFiles,
+            List<BigInteger> removeFiles) throws SQLException, IOException {
+        Connection conn = DatabaseManager.theConnection();
+        PreparedStatement ps =
+                conn.prepareStatement("UPDATE items SET name = ?, priority = ?, description = ?, modified = ? WHERE id = ?");
+        ps.setString(1, builder.name);
+        ps.setInt(2, builder.priority);
+        ps.setString(3, builder.description);
+        ps.setLong(4, builder.modified);
+        ps.setBigDecimal(5, new BigDecimal(id));
+        ps.executeUpdate();
+        
+        FileManager fileManager = FileManager.theFileManager();
+        
+        for (BigInteger fid : removeFiles) {
+            fileManager.delete(fid);
+        }
+        
+        for (PendingFile file : pendingFiles) {
+            BigInteger fid = fileManager.addFile(file, id);
         }
     }
     

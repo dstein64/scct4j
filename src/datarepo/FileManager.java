@@ -1,6 +1,7 @@
 package datarepo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager {
-    private String DIRECTORY = "files";
+    private File DIRECTORY = new File("files");
     
     public FileManager() {
-        new File(DIRECTORY).mkdirs();
+        DIRECTORY.mkdirs();
     }
     
     public synchronized BigInteger addFile(PendingFile file, BigInteger itemId) throws IOException, SQLException {
@@ -39,7 +40,7 @@ public class FileManager {
         }
         
         Files.copy(file.stream,
-                Paths.get(DIRECTORY, fid.toString(10)),
+                Utils.secureFile(DIRECTORY, fid.toString(10)).toPath(),
                 StandardCopyOption.REPLACE_EXISTING);
         file.stream.close();
         
@@ -68,8 +69,8 @@ public class FileManager {
         }
     }
     
-    public File getFile(BigInteger fid) {
-        return new File(DIRECTORY, fid.toString());
+    public File getFile(BigInteger fid) throws FileNotFoundException {
+        return Utils.secureFile(DIRECTORY, fid.toString());
     }
     
     /**
@@ -90,6 +91,13 @@ public class FileManager {
         return fids;
     }
     
+    /**
+     * Deletes a file on disk, and removes the file from both the files table and itemfiles table.
+     * 
+     * @param fid
+     * @throws SQLException
+     * @throws IOException
+     */
     public synchronized void delete(BigInteger fid) throws SQLException, IOException {
         // TODO: the following should be done in one transaction
         Connection conn = DatabaseManager.theConnection();

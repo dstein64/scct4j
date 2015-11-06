@@ -1,5 +1,4 @@
 <div class="container">
-
     <div class="row form-inline">
         <div class="col-md-3">
             <input ng-model="query" class="form-control" placeholder="Search">
@@ -36,14 +35,18 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="item in items | filter : query | orderBy : descProp + orderProp">
-					<td class="col-md-2">
+					<td class="col-md-2"
+					    style="max-width: 120px; word-wrap: break-word;">
 					  <a href="#/item/{{item.id}}">{{item.name}}</a>
 					</td>
 					<td class="col-md-1">{{item.id}}</td>
 					<td class="col-md-1">{{item.created | mydate}}</td>
 					<td class="col-md-1">{{item.modified | mydate}}</td>
 					<td class="col-md-1">{{item.priority}}</td>
-					<td class="col-md-3">{{item.description}}</td>
+					<td class="col-md-3">
+					  <pre class="pre-scrollable simple-pre"
+					       style="max-width: 450px; max-height: 200px;">{{item.description}}</pre>
+					</td>
 			    </tr>
 		    </tbody>
 		</table> 

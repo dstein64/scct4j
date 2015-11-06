@@ -22,8 +22,8 @@ app.config(function($routeProvider) {
           controller: 'ItemController'
       }).
       when('/update/:item', {
-          templateUrl: 'partials/update.html',
-          controller: 'UpdateController'
+          templateUrl: 'partials/submit.html',
+          controller: 'SubmitController'
       }).
       when ('/', {
           redirectTo: '/manage'

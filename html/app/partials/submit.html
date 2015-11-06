@@ -1,5 +1,28 @@
 <div class="container">
-	<form class="form-horizontal">
+	<form class="form-horizontal" name="form" id="form">
+      <div class="form-group" ng-show="updateFlag">
+        <dl class="dl-horizontal">
+          <dt>ID</dt>
+          <dd>{{item.id}}</dd>
+          <dt>Created</dt>
+          <dd>{{item.created | date : 'short'}}</dd>
+          <dt>Modified</dt>
+          <dd>{{item.modified | date : 'short'}}</dd>
+          <dt>Existing Files</dt>
+          <dd>
+            <span ng-show="item.existingFiles.length == 0">&#216;</span>
+            <ul ng-show="item.existingFiles.length > 0" class="list-unstyled">
+                <li ng-repeat="file in item.existingFiles">
+                    <label style="font-weight: normal;">
+                        <input type="checkbox" ng-model="file.keep"></input>
+                        {{file.name}}
+                    </label>
+                </li>
+            </ul>
+          </dd>
+        </dl>
+      </div>
+	
 	  <div class="form-group">
 	    <label for="name" class="col-md-{{labelCols}} control-label">
 	       Name
@@ -24,7 +47,7 @@
            Description
         </label>
         <div class="col-md-{{valueCols}}">
-          <textarea class="form-control" id="description" required ng-model="item.description"></textarea>
+          <textarea rows="8" class="form-control" id="description" required ng-model="item.description"></textarea>
         </div>
       </div>
     
@@ -62,10 +85,14 @@
 
 	  <div class="form-group">
 	    <div class="col-md-offset-{{labelCols}} col-md-{{valueCols}}">
-	      <button type="submit" class="btn btn-primary" ng-click="submit()">
+	      <button ng-show="!updateFlag" type="submit" class="btn btn-primary" ng-click="submit()">
 	        <i class="glyphicon glyphicon-upload"></i>
 	        Submit
 	      </button>
+	      <button ng-show="updateFlag" type="submit" class="btn btn-primary" ng-click="update()">
+            <i class="glyphicon glyphicon-floppy-disk"></i>
+            Save
+          </button>
 	    </div>
 	  </div>
 	</form>
