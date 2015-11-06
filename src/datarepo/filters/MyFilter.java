@@ -1,7 +1,6 @@
 package datarepo.filters;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.logging.Level;
 
 import javax.servlet.Filter;
