@@ -27,7 +27,7 @@ cd scct4j
 ```
 
 The example above uses port 8000. To use scct4j, navigate your browser
-to (http://localhost:8000/).
+to [http://localhost:8000/].
 
 Screenshots
 -----------
