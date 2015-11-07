@@ -29,6 +29,15 @@ cd scct4j
 The example above uses port 8000. To use scct4j, navigate your browser
 to [http://localhost:8000/](http://localhost:8000/).
 
+License
+-------
+
+scct4j has an [MIT License](https://en.wikipedia.org/wiki/MIT_License).
+
+See [LICENSE](LICENSE).
+
+This license does not apply to the libraries. For the library licenses, see their corresponding licenses.
+
 Screenshots
 -----------
 
@@ -50,11 +59,3 @@ The following images show various components of scct4j's UI.
 
 ![Manage](screenshots/manage.png)
 
-License
--------
-
-scct4j has an [MIT License](https://en.wikipedia.org/wiki/MIT_License).
-
-See [LICENSE](LICENSE).
-
-This license does not apply to the libraries. For the library licenses, see their corresponding licenses.
