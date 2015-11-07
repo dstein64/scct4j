@@ -22,12 +22,12 @@ Then the server can be launched.
 git clone 'https://github.com/dstein64/scct4j.git'
 cd scct4j
 ./build.sh
-./run.sh datarepo.DatabaseManager init
-./run.sh datarepo.server.Main 8000
+./run.sh scct4j.DatabaseManager init
+./run.sh scct4j.server.Main 8000
 ```
 
-The example above uses port 8000. To use the webapp, navigate your browser
-to http://localhost:8000/.
+The example above uses port 8000. To use scct4j, navigate your browser
+to (http://localhost:8000/).
 
 Screenshots
 -----------

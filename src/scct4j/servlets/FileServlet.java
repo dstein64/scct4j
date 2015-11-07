@@ -1,4 +1,4 @@
-package daterepo.servlets;
+package scct4j.servlets;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 
-import datarepo.FileItem;
-import datarepo.FileManager;
-import datarepo.Utils;
+import scct4j.FileItem;
+import scct4j.FileManager;
+import scct4j.Utils;
 
 /**
  *  Endpoint for retrieving files

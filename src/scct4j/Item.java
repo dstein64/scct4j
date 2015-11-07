@@ -1,4 +1,4 @@
-package datarepo;
+package scct4j;
 
 import java.io.IOException;
 import java.math.BigInteger;

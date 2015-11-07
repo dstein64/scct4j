@@ -1,4 +1,4 @@
-package datarepo.server;
+package scct4j.server;
 
 
 import java.io.File;
@@ -16,12 +16,12 @@ import org.apache.jasper.runtime.JspFactoryImpl;
 import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
 
-import datarepo.DatabaseManager;
-import datarepo.MyLogger;
-import datarepo.filters.MyFilter;
-import daterepo.servlets.FileServlet;
-import daterepo.servlets.ItemServlet;
-import daterepo.servlets.ItemsServlet;
+import scct4j.DatabaseManager;
+import scct4j.MyLogger;
+import scct4j.filters.MyFilter;
+import scct4j.servlets.FileServlet;
+import scct4j.servlets.ItemServlet;
+import scct4j.servlets.ItemsServlet;
 
 public class Main extends Thread {
     

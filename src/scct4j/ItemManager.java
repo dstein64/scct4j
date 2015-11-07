@@ -1,4 +1,4 @@
-package datarepo;
+package scct4j;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import datarepo.Item.Builder;
+import scct4j.Item.Builder;
 
 public class ItemManager {
     public void addItem(Builder builder, List<PendingFile> pendingFiles) throws IOException, SQLException, GeneralSecurityException {

@@ -1,4 +1,4 @@
-package datarepo;
+package scct4j;
 
 import java.io.File;
 import java.io.FileNotFoundException;

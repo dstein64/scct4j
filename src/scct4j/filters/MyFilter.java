@@ -1,4 +1,4 @@
-package datarepo.filters;
+package scct4j.filters;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -12,7 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import datarepo.MyLogger;
+import scct4j.MyLogger;
 
 public class MyFilter implements Filter {
 

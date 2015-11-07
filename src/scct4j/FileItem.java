@@ -1,4 +1,4 @@
-package datarepo;
+package scct4j;
 
 public class FileItem {
     public String name;

@@ -1,4 +1,4 @@
-package daterepo.servlets;
+package scct4j.servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import datarepo.DatabaseManager;
-import datarepo.Item;
-import datarepo.ItemManager;
-import datarepo.MyLogger;
+import scct4j.DatabaseManager;
+import scct4j.Item;
+import scct4j.ItemManager;
+import scct4j.MyLogger;
 
 /**
  *  Endpoint for retrieving all items

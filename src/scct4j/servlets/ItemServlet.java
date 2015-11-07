@@ -1,4 +1,4 @@
-package daterepo.servlets;
+package scct4j.servlets;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -19,13 +19,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import datarepo.FileItem;
-import datarepo.FileManager;
-import datarepo.Item;
-import datarepo.Item.Builder;
-import datarepo.ItemManager;
-import datarepo.PendingFile;
-import datarepo.Utils;
+import scct4j.FileItem;
+import scct4j.FileManager;
+import scct4j.Item;
+import scct4j.ItemManager;
+import scct4j.PendingFile;
+import scct4j.Utils;
+import scct4j.Item.Builder;
 
 /**
  *  Endpoint for creating/retrieving/updating/deleting a single item
