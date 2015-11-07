@@ -37,5 +37,6 @@ The following images show various components of scct4j's UI.
 License
 -------
 
+scct4j has an [MIT License](https://en.wikipedia.org/wiki/MIT_License).
 See [LICENSE](LICENSE).
 This license does not apply to the libraries. For the library licenses, see their corresponding licenses.
