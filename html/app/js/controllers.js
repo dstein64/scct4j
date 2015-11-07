@@ -11,25 +11,37 @@ var startsWith = function(str, start) {
 controllers.controller('SubmitController', function($scope, $http, $location, $routeParams) {
     $scope.updateFlag = startsWith($location.$$url, "/update/");
     
+    // Stuff specific to update page goes below, although some update-specific
+    // functionality is also beyond the block below
     if ($scope.updateFlag) {
         $scope.item = {};
         var id = $routeParams.item;
-        $http.get('/item/' + id).then(function(response) {
-            var data = response.data;
-            $scope.item.name = data.name;
-            $scope.item.id = data.id;
-            $scope.item.created = data.created;
-            $scope.item.modified = data.modified;
-            $scope.item.existingFiles = data.files;
-            for (var i = 0; i < $scope.item.existingFiles.length; i++) {
-                $scope.item.existingFiles[i].keep = true;
-            }
-            $scope.item.priority = data.priority;
-            $scope.item.description = data.description;
-        }, function(response) {
-            alert('Error Retrieving Item');
+        var get = function() {
+            $http.get('/item/' + id).then(function(response) {
+                var data = response.data;
+                $scope.item.name = data.name;
+                $scope.item.id = data.id;
+                $scope.item.created = data.created;
+                $scope.item.modified = data.modified;
+                $scope.item.existingFiles = data.files;
+                for (var i = 0; i < $scope.item.existingFiles.length; i++) {
+                    $scope.item.existingFiles[i].keep = true;
+                }
+                $scope.item.priority = data.priority;
+                $scope.item.description = data.description;
+            }, function(response) {
+                alert('Error Retrieving Item');
+                $location.path('/item/' + id);
+            });
+        };
+        
+        get();
+        
+        $scope.revert = get;
+        
+        $scope.cancel = function() {
             $location.path('/item/' + id);
-        });
+        };
     }
     
     // Loading Indicator (and default text/icons for submit button)

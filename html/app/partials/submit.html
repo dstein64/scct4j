@@ -95,6 +95,16 @@
              <i class="{{submitClass}}"></i>
              {{submitText}}
 	      </button>
+	      <span ng-show="updateFlag">
+            <button ng-click="cancel()" class="btn btn-warning">
+              <i class="glyphicon glyphicon-remove"></i>
+              Cancel
+            </button>
+            <button ng-click="revert()" class="btn btn-default">
+              <i class="glyphicon glyphicon-refresh"></i>
+              Reload
+            </button>
+          </span>
 	    </div>
 	  </div>
 	</form>
