@@ -20,6 +20,6 @@ for f in "${LIBFOLDER}"/*.jar; do
 done;
 CLASSPATH="${BUILDFOLDER}${SEP}${LIBPATH}${SEP}${CLASSPATH}"
 
-shopt -s globstar
-javac -d "${BUILDFOLDER}" -cp "${CLASSPATH}" "${SRCFOLDER}"/**/*.java
-
+# use @ and process substitution since it works on older versions of bash,
+# as opposed to globstar shell option
+javac -d "${BUILDFOLDER}" -cp "${CLASSPATH}" @<(find "${SRCFOLDER}" -name "*.java")
