@@ -32,25 +32,25 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
         });
     }
     
+    // Loading Indicator (and default text/icons for submit button)
     $scope.loading = false;
     var notLoading = function() {
         $scope.loading = false;
         $scope.submitText = $scope.updateFlag ? "Save" : "Submit";
         $scope.submitClass = $scope.updateFlag ? "glyphicon glyphicon-floppy-disk" : "glyphicon glyphicon-upload";    
     };
-    
     var loading = function() {
         $scope.loading = true;
         $scope.submitClass = 'glyphicon glyphicon-refresh glyphicon-refresh-animate';
     }
-    
     notLoading();
-    
     
     $scope.files = [];
     $scope.change = function(file) {
         if (file.value) {
-            $scope.files.push(file.files[0]);
+            for (var i = 0; i < file.files.length; i++) {
+                $scope.files.push(file.files[i]);
+            }
             $scope.$apply();   
         }
     };

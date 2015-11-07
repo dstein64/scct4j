@@ -7,6 +7,16 @@ directives.directive('navigation', function() {
         restrict: 'E',
         templateUrl: 'partials/navigation.html'
     };
+}).directive('input', function() {
+    return {
+        restrict: 'E',
+        require: '?ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            if ('type' in attrs && attrs.type.toLowerCase() === 'range') {
+                ngModel.$parsers.push(parseFloat);
+            }
+        }
+    };
 });
 
 
