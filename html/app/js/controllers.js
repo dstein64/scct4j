@@ -32,6 +32,21 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
         });
     }
     
+    $scope.loading = false;
+    var notLoading = function() {
+        $scope.loading = false;
+        $scope.submitText = $scope.updateFlag ? "Save" : "Submit";
+        $scope.submitClass = $scope.updateFlag ? "glyphicon glyphicon-floppy-disk" : "glyphicon glyphicon-upload";    
+    };
+    
+    var loading = function() {
+        $scope.loading = true;
+        $scope.submitClass = 'glyphicon glyphicon-refresh glyphicon-refresh-animate';
+    }
+    
+    notLoading();
+    
+    
     $scope.files = [];
     $scope.change = function(file) {
         if (file.value) {
@@ -121,12 +136,15 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
             failureMessage = 'Error Saving';
         }
         
+        loading();
         method(endpoint, fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         }).then(function(response) {
+            notLoading();
             forceChangePage(successRedirect);
         }, function(response) {
+            notLoading();
             alert(failureMessage);
         });
     };

@@ -15,27 +15,29 @@ import java.util.List;
 import datarepo.Item.Builder;
 
 public class ItemManager {
-    public synchronized void addItem(Builder builder, List<PendingFile> pendingFiles) throws IOException, SQLException, GeneralSecurityException {
-        Connection conn = DatabaseManager.theConnection();
-        // "ID" has to be upper case or doesn't work
-        PreparedStatement ps =
-                conn.prepareStatement("INSERT INTO items VALUES (DEFAULT, ?, ?, ?, ?, ?)", new String[] {"ID"});
-        ps.setString(1, builder.name);
-        ps.setLong(2, builder.created);
-        ps.setLong(3, builder.modified);
-        ps.setInt(4, builder.priority);
-        ps.setString(5, builder.description);
-        ps.executeUpdate();
-        
+    public void addItem(Builder builder, List<PendingFile> pendingFiles) throws IOException, SQLException, GeneralSecurityException {
         BigInteger id;
-        ResultSet rs = ps.getGeneratedKeys();
-        if (rs.next()) {
-            id = rs.getBigDecimal(1).toBigInteger();
-        } else {
-            throw new SQLException();
+        synchronized (this) {
+            Connection conn = DatabaseManager.theConnection();
+            // "ID" has to be upper case or doesn't work
+            PreparedStatement ps =
+                    conn.prepareStatement("INSERT INTO items VALUES (DEFAULT, ?, ?, ?, ?, ?)", new String[] {"ID"});
+            ps.setString(1, builder.name);
+            ps.setLong(2, builder.created);
+            ps.setLong(3, builder.modified);
+            ps.setInt(4, builder.priority);
+            ps.setString(5, builder.description);
+            ps.executeUpdate();
+            
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                id = rs.getBigDecimal(1).toBigInteger();
+            } else {
+                throw new SQLException();
+            }
+            
+            builder.setId(id);
         }
-        
-        builder.setId(id);
         
         // save files
         FileManager fileManager = FileManager.theFileManager();
@@ -44,45 +46,49 @@ public class ItemManager {
         }
     }
     
-    public synchronized void modifyItem(BigInteger id,
+    public void modifyItem(BigInteger id,
             Builder builder,
             List<PendingFile> pendingFiles,
             List<BigInteger> removeFiles) throws SQLException, IOException, GeneralSecurityException {
-        Connection conn = DatabaseManager.theConnection();
-        PreparedStatement ps =
-                conn.prepareStatement("UPDATE items SET name = ?, priority = ?, description = ?, modified = ? WHERE id = ?");
-        ps.setString(1, builder.name);
-        ps.setInt(2, builder.priority);
-        ps.setString(3, builder.description);
-        ps.setLong(4, builder.modified);
-        ps.setBigDecimal(5, new BigDecimal(id));
-        ps.executeUpdate();
-        
-        FileManager fileManager = FileManager.theFileManager();
-        
-        for (BigInteger fid : removeFiles) {
-            fileManager.delete(fid);
-        }
-        
-        for (PendingFile file : pendingFiles) {
-            BigInteger fid = fileManager.addFile(file, id);
+        synchronized (this) {
+            Connection conn = DatabaseManager.theConnection();
+            PreparedStatement ps =
+                    conn.prepareStatement("UPDATE items SET name = ?, priority = ?, description = ?, modified = ? WHERE id = ?");
+            ps.setString(1, builder.name);
+            ps.setInt(2, builder.priority);
+            ps.setString(3, builder.description);
+            ps.setLong(4, builder.modified);
+            ps.setBigDecimal(5, new BigDecimal(id));
+            ps.executeUpdate();
+            
+            FileManager fileManager = FileManager.theFileManager();
+            
+            for (BigInteger fid : removeFiles) {
+                fileManager.delete(fid);
+            }
+            
+            for (PendingFile file : pendingFiles) {
+                BigInteger fid = fileManager.addFile(file, id);
+            }   
         }
     }
     
-    public synchronized void deleteItem(BigInteger id) throws SQLException, IOException, GeneralSecurityException {
-       // TODO: throw error if problem deleting
-        
-        FileManager fm = FileManager.theFileManager();
-        List<BigInteger> fids = fm.itemFiles(id);
-        for (BigInteger fid : fids) {
-            fm.delete(fid);
+    public void deleteItem(BigInteger id) throws SQLException, IOException, GeneralSecurityException {
+        synchronized (this) {
+            // TODO: throw error if problem deleting
+            
+            FileManager fm = FileManager.theFileManager();
+            List<BigInteger> fids = fm.itemFiles(id);
+            for (BigInteger fid : fids) {
+                fm.delete(fid);
+            }
+            
+            Connection conn = DatabaseManager.theConnection();
+            PreparedStatement ps =
+                    conn.prepareStatement("DELETE FROM items WHERE id = ?");
+            ps.setBigDecimal(1, new BigDecimal(id));
+            ps.execute();   
         }
-        
-        Connection conn = DatabaseManager.theConnection();
-        PreparedStatement ps =
-                conn.prepareStatement("DELETE FROM items WHERE id = ?");
-        ps.setBigDecimal(1, new BigDecimal(id));
-        ps.execute();
     }
     
     /**
@@ -109,30 +115,34 @@ public class ItemManager {
         return builder.build();
     }
     
-    public synchronized Item getItem(BigInteger id) throws SQLException, IOException {
-        Connection conn = DatabaseManager.theConnection();
-        PreparedStatement ps =
-                conn.prepareStatement("SELECT * FROM items WHERE id = ?");
-        ps.setBigDecimal(1, new BigDecimal(id));
-        ResultSet rs = ps.executeQuery();
-        
-        if (rs.next()) {
-            return rsToItem(rs);
-        } else {
-            throw new SQLException();
+    public Item getItem(BigInteger id) throws SQLException, IOException {
+        synchronized (this) {
+            Connection conn = DatabaseManager.theConnection();
+            PreparedStatement ps =
+                    conn.prepareStatement("SELECT * FROM items WHERE id = ?");
+            ps.setBigDecimal(1, new BigDecimal(id));
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                return rsToItem(rs);
+            } else {
+                throw new SQLException();
+            }   
         }
     }
     
-    public synchronized List<Item> getAllItems() throws SQLException, IOException {
-        // TODO: return sorted? 
-        Connection conn = DatabaseManager.theConnection();
-        Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery("SELECT * FROM items");
-        List<Item> items = new ArrayList<>();
-        while (rs.next()) {
-            items.add(rsToItem(rs));
+    public List<Item> getAllItems() throws SQLException, IOException {
+        synchronized (this) {
+            // TODO: return sorted? 
+            Connection conn = DatabaseManager.theConnection();
+            Statement s = conn.createStatement();
+            ResultSet rs = s.executeQuery("SELECT * FROM items");
+            List<Item> items = new ArrayList<>();
+            while (rs.next()) {
+                items.add(rsToItem(rs));
+            }
+            return items;   
         }
-        return items;
     }
     
     // singleton

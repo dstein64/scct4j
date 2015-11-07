@@ -5,7 +5,13 @@ angular.module('filters', []).filter('mydate', function($filter) {
         // use a non-breaking space in the between numeric time and AM/PM
         return $filter('date')(input, "M/d/yyyy h:mm\xA0a");
     };
-}).filter( 'filesize', function () {
+}).filter('nbdate', function($filter) {
+    return function(input, format) {
+        var d = $filter('date')(input, format);
+        if (d) d = d.split(' ').join('\xA0');
+        return d;
+    };
+}).filter('filesize', function () {
     var units = ['bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
 
     return function( bytes, precision ) {

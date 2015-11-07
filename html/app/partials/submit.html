@@ -5,9 +5,9 @@
           <dt>ID</dt>
           <dd>{{item.id}}</dd>
           <dt>Created</dt>
-          <dd>{{item.created | date : 'short'}}</dd>
+          <dd>{{item.created | nbdate : 'short'}}</dd>
           <dt>Modified</dt>
-          <dd>{{item.modified | date : 'short'}}</dd>
+          <dd>{{item.modified | nbdate : 'short'}}</dd>
           <dt>Existing Files</dt>
           <dd>
             <span ng-show="item.existingFiles.length == 0">&#216;</span>
@@ -90,15 +90,9 @@
 
 	  <div class="form-group">
 	    <div class="col-md-offset-{{labelCols}} col-md-{{valueCols}}">
-	      <button type="submit" class="btn btn-primary" ng-click="submit()">
-	        <span ng-show="!updateFlag">
-	            <i class="glyphicon glyphicon-upload"></i>
-                Submit
-	        </span>
-	        <span ng-show="updateFlag">
-                <i class="glyphicon glyphicon-floppy-disk"></i>
-                Save
-            </span>
+	      <button type="submit" class="btn btn-primary" ng-disabled="loading" ng-click="submit()">
+             <i class="{{submitClass}}"></i>
+             {{submitText}}
 	      </button>
 	    </div>
 	  </div>
