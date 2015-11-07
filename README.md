@@ -9,8 +9,8 @@ Support for file uploads is included by the use of a multipart/form-data API.
 
 It is not intended to be useful as-is, but rather it is a template that can be
 used to build more extensive CRUD webapps. It is implemented using AngularJS for
-the UI, Java for the server, and Derby for its database. The only dependency is Java.
-Otherwise, the app is self-contained.
+the UI, Java for the server (using embedded Tomcat), and Derby for its embedded
+database. The only dependency is Java. Otherwise, the app is self-contained.
 
 How To Use
 ----------
