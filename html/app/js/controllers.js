@@ -97,12 +97,12 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
             return false;
         
         var totalSize = 0;
-        var maxSize = 100 * 1024 * 1024; // 100 MiB
+        var maxMiB = 100;
         for (var i = 0; i < $scope.files.length; i++) {
             totalSize += $scope.files[i].size;
         }
-        if (totalSize > maxSize) {
-            alert("A submission cannot exceed 100MiB.");
+        if (totalSize > (maxMiB * 1024 * 1024)) {
+            alert("A submission cannot exceed " + maxMiB + "MiB.");
             return false;
         }
         

@@ -23,6 +23,6 @@ angular.module('filters', []).filter('mydate', function($filter) {
             }
         }
 
-        return bytes.toFixed( + precision ) + ' ' + units[unit];
+        return bytes.toFixed( + precision ) + '\xA0' + units[unit];
     };
 });

@@ -61,10 +61,14 @@
 		  <table class="table table-striped">
             <tbody>
                 <tr ng-repeat="file in files">
-                  <td class="col-md-4">
+                  <td class="col-md-4"
+                      style="max-width: 300px; word-wrap: break-word;">
                     {{file.name}}
                   </td>
-                  <td class="col-md-2">
+                  <td class="col-md-1">
+                    {{file.size | filesize : 2}}
+                  </td>
+                  <td class="col-md-1">
                       <button class="btn btn-warning pull-right" ng-click="files.splice($index, 1)">
                           <i class="glyphicon glyphicon-ban-circle"></i>
                           Cancel
