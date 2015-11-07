@@ -2,18 +2,18 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="lib/ecj-4.4.2.jar"/>
-	<classpathentry kind="lib" path="lib/tomcat-dbcp.jar"/>
-	<classpathentry kind="lib" path="lib/tomcat-embed-core.jar"/>
-	<classpathentry kind="lib" path="lib/tomcat-embed-el.jar"/>
-	<classpathentry kind="lib" path="lib/tomcat-embed-jasper.jar"/>
-	<classpathentry kind="lib" path="lib/tomcat-embed-logging-juli.jar"/>
-	<classpathentry kind="lib" path="lib/tomcat-embed-logging-log4j.jar"/>
-	<classpathentry kind="lib" path="lib/tomcat-embed-websocket.jar"/>
-	<classpathentry kind="lib" path="lib/json-20150729.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="lib/derby.jar"/>
-	<classpathentry kind="lib" path="lib/derbytools.jar"/>
-	<classpathentry kind="lib" path="lib/derbynet.jar"/>
+	<classpathentry kind="lib" path="lib/jar/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/jar/derby.jar"/>
+	<classpathentry kind="lib" path="lib/jar/derbynet.jar"/>
+	<classpathentry kind="lib" path="lib/jar/derbytools.jar"/>
+	<classpathentry kind="lib" path="lib/jar/ecj-4.4.2.jar"/>
+	<classpathentry kind="lib" path="lib/jar/json-20150729.jar"/>
+	<classpathentry kind="lib" path="lib/jar/tomcat-dbcp.jar"/>
+	<classpathentry kind="lib" path="lib/jar/tomcat-embed-core.jar" sourcepath="lib/src/apache-tomcat-8.0.27-src.zip"/>
+	<classpathentry kind="lib" path="lib/jar/tomcat-embed-el.jar"/>
+	<classpathentry kind="lib" path="lib/jar/tomcat-embed-jasper.jar"/>
+	<classpathentry kind="lib" path="lib/jar/tomcat-embed-logging-juli.jar"/>
+	<classpathentry kind="lib" path="lib/jar/tomcat-embed-logging-log4j.jar"/>
+	<classpathentry kind="lib" path="lib/jar/tomcat-embed-websocket.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

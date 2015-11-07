@@ -27,6 +27,7 @@
 	            <ul ng-show="item.files.length > 0" class="list-unstyled">
 			        <li ng-repeat="file in item.files">
 			            <a href="/file/{{file.id}}">{{file.name}}</a>
+			            ({{file.size | filesize : 2}})
 			        </li>
 			    </ul>
 	        </dd>

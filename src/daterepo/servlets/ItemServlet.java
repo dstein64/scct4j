@@ -2,7 +2,6 @@ package daterepo.servlets;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,10 +111,11 @@ public class ItemServlet extends HttpServlet {
         for (Part p : req.getParts()) {
             if (p.getName().equals("files[]")) {
                 PendingFile file = new PendingFile();
-                file.name = p.getSubmittedFileName();
+                file.name = FilenameUtils.getName(p.getSubmittedFileName());
                 file.contentType = p.getContentType();
                 file.stream = p.getInputStream(); // input stream is closed when copied
                                                   // in FileManager#addFile
+                
                 file.size = p.getSize();
                 files.add(file);
             }
@@ -126,15 +127,16 @@ public class ItemServlet extends HttpServlet {
     // It receives Content-Type: multipart/form-data
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long time = System.currentTimeMillis();
-        Builder builder = requestToBuilder(req)
-                .setCreated(time)
-                .setModified(time);
-        List<PendingFile> files = requestToPendingFiles(req);
         try {
+            long time = System.currentTimeMillis();
+            Builder builder = requestToBuilder(req)
+                    .setCreated(time)
+                    .setModified(time);
+            List<PendingFile> files = requestToPendingFiles(req);
             itemManager.addItem(builder, files);
-        } catch (SQLException | GeneralSecurityException e) {
+        } catch (Exception e) {
             Utils.genericicHandleError(e, resp);
+            resp.sendError(500);
             return;
         }
     }
@@ -142,10 +144,10 @@ public class ItemServlet extends HttpServlet {
     // DELETE removes an item
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        BigInteger id = getId(req);
         try {
+            BigInteger id = getId(req);
             itemManager.deleteItem(id);
-        } catch (SQLException | GeneralSecurityException e) {
+        } catch (Exception e) {
             Utils.genericicHandleError(e, resp);
             return;
         }
@@ -154,24 +156,22 @@ public class ItemServlet extends HttpServlet {
     // PUT updates an existing item
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        BigInteger id = getId(req);
-        long time = System.currentTimeMillis();
-        // Don't need to set "created". We keep the original "created" date
-        Builder builder = requestToBuilder(req)
-                .setModified(time);
-        List<PendingFile> files = requestToPendingFiles(req);
-        
-        List<BigInteger> removeFiles = new ArrayList<BigInteger>();
-        for (Part p : req.getParts()) {
-            if (p.getName().equals("removefiles[]")) {
-                removeFiles.add(new BigInteger(partToString(p, req)));
-            }
-        }
-        
         try {
-            // TODO: have to get the list of files to remove
+            BigInteger id = getId(req);
+            long time = System.currentTimeMillis();
+            // Don't need to set "created". We keep the original "created" date
+            Builder builder = requestToBuilder(req)
+                    .setModified(time);
+            List<PendingFile> files = requestToPendingFiles(req);
+            
+            List<BigInteger> removeFiles = new ArrayList<BigInteger>();
+            for (Part p : req.getParts()) {
+                if (p.getName().equals("removefiles[]")) {
+                    removeFiles.add(new BigInteger(partToString(p, req)));
+                }
+            }
             itemManager.modifyItem(id, builder, files, removeFiles);
-        } catch (SQLException | GeneralSecurityException e) {
+        } catch (Exception e) {
             Utils.genericicHandleError(e, resp);
             return;
         }

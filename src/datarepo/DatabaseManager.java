@@ -31,7 +31,7 @@ public class DatabaseManager {
     public void init(OutputStream os) throws IOException {
         InputStream init = new FileInputStream(new File("db/init.sql"));
         
-        ij.runScript(conn, init, "UTF-8", os, "UTF-8");
+        ij.runScript(conn, init, "ASCII", os, "ASCII");
         
         if (init != null)
             init.close();
@@ -96,10 +96,13 @@ public class DatabaseManager {
             String arg = args[0];
             switch (arg) {
                 case "init":
-                    // this wipes any existing database, and initializes a new one
-                    //OutputStream os = new NullOutputStream();
-                    FileUtils.deleteDirectory(new File("db/derby"));
-                    theDatabaseManager().init(System.out);
+                    if (Utils.yesOrNo("This will wipe existing data. Continue? [y/n] ")) {
+                        System.out.println("Initializing Database");
+                        // this wipes any existing database, and initializes a new one
+                        //OutputStream os = new NullOutputStream();
+                        FileUtils.deleteDirectory(new File("db/derby"));
+                        theDatabaseManager().init(System.out);
+                    }
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid argument");

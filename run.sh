@@ -14,7 +14,7 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "${SCRIPTDIR}"
 
 # cd to scriptdir as opposed to absolute paths, which may encounter problems on cygwin
-LIBFOLDER="lib"
+LIBFOLDER="lib/jar"
 BUILDFOLDER="bin"
 JAVA_ARGS=("-Xmx2048m")
 

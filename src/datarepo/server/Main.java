@@ -4,6 +4,7 @@ package datarepo.server;
 import java.io.File;
 import java.util.logging.Level;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.jsp.JspFactory;
 
 import org.apache.catalina.Context;
@@ -73,6 +74,18 @@ public class Main extends Thread {
         
         // we received multi-part data uploads
         ctx.setAllowCasualMultipartParsing(true);
+        
+        // and set a higher POST size than default
+        // Defaults to 2 * 1024 * 1024 = 2,097,152 in line 181 in Connector.java
+        tomcat.getConnector().setMaxPostSize(100 * 1024 * 1024);
+        // could also modify this per servlet (line 2,670 in Request.java has defaults)
+        // (where you get servletWrapper with Tomcat.addServlet
+        //servletWrapper.setMultipartConfigElement(new MultipartConfigElement(
+        //        null, // location in which the Container stores temporary files
+        //        2,097,152, // max size allowed for uploaded files -1L is no limit)
+        //        2,097,152, // max size of the request allowed for (-1L is no limit)
+        //        2,097,152) // size threshold at which the file will be written to the disk
+        //);
 
         // Sessions
         ctx.setSessionTimeout(30);
@@ -97,7 +110,7 @@ public class Main extends Thread {
         
         // Custom Servlets
         
-        Tomcat.addServlet(ctx, "item", ItemServlet.class.getName());
+        Wrapper itemServlet = Tomcat.addServlet(ctx, "item", ItemServlet.class.getName());
         ctx.addServletMapping("/item/*", "item");
         
         Tomcat.addServlet(ctx, "items", ItemsServlet.class.getName());

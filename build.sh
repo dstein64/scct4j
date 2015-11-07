@@ -8,7 +8,7 @@ fi
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "${SCRIPTDIR}"
 
-LIBFOLDER="lib"
+LIBFOLDER="lib/jar"
 BUILDFOLDER="bin"
 SRCFOLDER="src"
 

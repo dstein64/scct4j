@@ -15,7 +15,8 @@
                 <li ng-repeat="file in item.existingFiles">
                     <label style="font-weight: normal;">
                         <input type="checkbox" ng-model="file.keep"></input>
-                        {{file.name}}
+                        <a href="/file/{{file.id}}">{{file.name}}</a>
+                        ({{file.size | filesize : 2}})
                     </label>
                 </li>
             </ul>
@@ -85,14 +86,16 @@
 
 	  <div class="form-group">
 	    <div class="col-md-offset-{{labelCols}} col-md-{{valueCols}}">
-	      <button ng-show="!updateFlag" type="submit" class="btn btn-primary" ng-click="submit()">
-	        <i class="glyphicon glyphicon-upload"></i>
-	        Submit
+	      <button type="submit" class="btn btn-primary" ng-click="submit()">
+	        <span ng-show="!updateFlag">
+	            <i class="glyphicon glyphicon-upload"></i>
+                Submit
+	        </span>
+	        <span ng-show="updateFlag">
+                <i class="glyphicon glyphicon-floppy-disk"></i>
+                Save
+            </span>
 	      </button>
-	      <button ng-show="updateFlag" type="submit" class="btn btn-primary" ng-click="update()">
-            <i class="glyphicon glyphicon-floppy-disk"></i>
-            Save
-          </button>
 	    </div>
 	  </div>
 	</form>

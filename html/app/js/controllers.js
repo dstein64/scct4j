@@ -93,34 +93,43 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
     };
     
     $scope.submit = function() {
-        if (document.getElementById('form').checkValidity()) {
-            var fd = $scope.getFormData();
-            $http.post('/item/', fd, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            }).then(function(response) {
-                forceChangePage('/');
-            }, function(response) {
-                alert('Error Submitting');
-            });
+        if (!document.getElementById('form').checkValidity())
+            return false;
+        
+        var totalSize = 0;
+        var maxSize = 100 * 1024 * 1024; // 100 MiB
+        for (var i = 0; i < $scope.files.length; i++) {
+            totalSize += $scope.files[i].size;
         }
-    };
-    
-    $scope.update = function() {
-        if (document.getElementById('form').checkValidity()) {
-            var fd = $scope.getFormData();
+        if (totalSize > maxSize) {
+            alert("A submission cannot exceed 100MiB.");
+            return false;
+        }
+        
+        var fd = $scope.getFormData();
+        
+        var method = $http.post;
+        var endpoint = '/item/';
+        var successRedirect = '/';
+        var failureMessage = 'Error Submitting';
+        
+        if ($scope.updateFlag) {
             var id = $routeParams.item;
-            $http.put('/item/' + id, fd, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            }).then(function(response) {
-                forceChangePage('/item/' + id);
-            }, function(response) {
-                alert('Error Saving');
-            });
+            method = $http.put;
+            endpoint = '/item/' + id;
+            successRedirect = '/item/' + id;
+            failureMessage = 'Error Saving';
         }
-    }
-    
+        
+        method(endpoint, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).then(function(response) {
+            forceChangePage(successRedirect);
+        }, function(response) {
+            alert(failureMessage);
+        });
+    };
 });
 
 controllers.controller('ManageController', function($scope, $http) {

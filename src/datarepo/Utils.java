@@ -3,14 +3,23 @@ package datarepo;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.security.GeneralSecurityException;
+import java.util.Scanner;
 import java.util.logging.Level;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.http.fileupload.FileUploadBase.SizeLimitExceededException;
+
 public class Utils {
     public static void genericicHandleError(Exception e, HttpServletResponse resp) {
         MyLogger.log.log(Level.SEVERE, "Error", e);
-        resp.setStatus(500);
+        
+        if (Utils.hasCause(e, SizeLimitExceededException.class)) {
+            // this doesn't work. Tomcat stops accepting data and connection closes, thus no error message sent
+            resp.setStatus(413);
+        } else {
+            resp.setStatus(500);
+        }
     }
     
     /**
@@ -30,5 +39,47 @@ public class Utils {
             }
         }
         throw new GeneralSecurityException();
+    }
+    
+    // singleton
+    // don't close because then you can't do subsequent reads from stdin
+    private static Scanner inputScanner = null;
+    public static synchronized Scanner inputScanner() {
+        if (inputScanner == null) {
+            inputScanner = new Scanner(System.in);
+        }
+        return inputScanner;
+    }
+    
+    public static boolean yesOrNo(String question) {
+        while (true) {
+            System.out.print(question);
+            String response = new String(inputScanner().next().toLowerCase());
+            switch (response) {
+                case "y":
+                case "yes:":
+                    return true;
+                case "n":
+                case "no":
+                    return false;
+                default:
+                    break;  
+            }
+        }
+    }
+    
+    /**
+     * Returns true if t is itself or has as an underlying cause, cause
+     */
+    public static boolean hasCause(Throwable t, Class<? extends Throwable> cause) {
+        while (true) {
+            if (t.getClass().equals(cause)) {
+                return true;
+            } else if (t.getCause() != null) {
+                t = t.getCause();
+            } else {
+                return false;
+            }
+        }
     }
 }
