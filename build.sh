@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 SEP=:
 if [ "$OSTYPE" = "cygwin" ]; then
