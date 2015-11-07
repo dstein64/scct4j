@@ -26,6 +26,9 @@ cd scct4j
 ./run.sh datarepo.server.Main 8000
 ```
 
+The example above uses port 8000. To use the webapp, navigate your browser
+to http://localhost:8000/.
+
 Screenshots
 -----------
 
