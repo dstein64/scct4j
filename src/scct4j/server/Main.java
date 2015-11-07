@@ -4,7 +4,6 @@ package scct4j.server;
 import java.io.File;
 import java.util.logging.Level;
 
-import javax.servlet.MultipartConfigElement;
 import javax.servlet.jsp.JspFactory;
 
 import org.apache.catalina.Context;
