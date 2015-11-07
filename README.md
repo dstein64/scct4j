@@ -34,6 +34,22 @@ Screenshots
 
 The following images show various components of scct4j's UI.
 
+#### Submit
+
+![Submit](screenshots/submit.png)
+
+#### View an Item
+
+![View an Item](screenshots/item.png)
+
+#### Update an Item
+
+![Update an Item](screenshots/update.png)
+
+#### Manage
+
+![Manage](screenshots/manage.png)
+
 License
 -------
 
