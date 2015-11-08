@@ -1,9 +1,14 @@
-<nav class="container-fluid navbar navbar-default navbar-static-top">
+<nav ng-controller="NavigationController"
+     class="container-fluid navbar navbar-default navbar-static-top">
 	<a class="navbar-brand hidden-xs" href="app/#/">scct4j</a>
 	<div>
-	   <ul class="nav navbar-nav" ng-controller="NavigationController">
-         <li ng-class="{ active:isActive('manage') }"><a href="app/#/manage">Manage</a></li>
-         <li ng-class="{ active:isActive('submit') }"><a href="app/#/submit">Submit</a></li>
+	   <ul class="nav navbar-nav">
+         <li ng-class="{ active:isActive('manage') }">
+           <a href="app/#/manage">Manage</a>
+         </li>
+         <li ng-class="{ active:isActive('submit') }">
+           <a href="app/#/submit">Submit</a>
+         </li>
        </ul>
 	</div>
 </nav>
