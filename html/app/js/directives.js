@@ -5,7 +5,7 @@ var directives = angular.module('directives', []);
 directives.directive('navigation', function() {
     return {
         restrict: 'E',
-        templateUrl: 'partials/navigation.html'
+        templateUrl: 'app/partials/navigation.html'
     };
 }).directive('input', function() {
     return {
@@ -18,5 +18,4 @@ directives.directive('navigation', function() {
         }
     };
 });
-
 

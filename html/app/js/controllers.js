@@ -28,7 +28,7 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
         $scope.item = {};
         var id = $routeParams.item;
         var get = function() {
-            $http.get('/item/' + id).then(function(response) {
+            $http.get('item/' + id).then(function(response) {
                 var data = response.data;
                 $scope.item.name = data.name;
                 $scope.item.id = data.id;
@@ -146,14 +146,14 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
         var fd = $scope.getFormData();
         
         var method = $http.post;
-        var endpoint = '/item/';
+        var endpoint = 'item/';
         var successRedirect = '/';
         var failureMessage = 'Error Submitting';
         
         if ($scope.updateFlag) {
             var id = $routeParams.item;
             method = $http.put;
-            endpoint = '/item/' + id;
+            endpoint = 'item/' + id;
             successRedirect = '/item/' + id;
             failureMessage = 'Error Saving';
         }
@@ -175,7 +175,7 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
 controllers.controller('ManageController', function($scope, $http) {
     $scope.items = [];
     $scope.get = function() {
-        $http.get('/items').then(function(response) {
+        $http.get('items').then(function(response) {
             $scope.items = response.data;
         }, function(response) {
             alert('Error Retrieving Items');
@@ -191,7 +191,7 @@ controllers.controller('ItemController', function($scope, $http, $routeParams, $
     $scope.id = $routeParams.item;
     $scope.item = {};
     $scope.get = function() {
-        $http.get('/item/' + $scope.id).then(function(response) {
+        $http.get('item/' + $scope.id).then(function(response) {
             $scope.item = response.data;
         }, function(response) {
             alert('Error Retrieving Item');
@@ -202,7 +202,7 @@ controllers.controller('ItemController', function($scope, $http, $routeParams, $
     $scope.del = function() {
         var confirm = window.confirm("Are you sure you want to delete this?");
         if (confirm) {
-            $http.delete('/item/' + $scope.id, {}).then(function(response) {
+            $http.delete('item/' + $scope.id, {}).then(function(response) {
                 $location.path('/');
             }, function(response) {
                 alert('Error Deleting');

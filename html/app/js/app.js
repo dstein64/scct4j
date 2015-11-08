@@ -10,19 +10,19 @@ var app = angular.module("app", [
 app.config(function($routeProvider) {
     $routeProvider.
       when('/manage', {
-          templateUrl: 'partials/manage.html',
+          templateUrl: 'app/partials/manage.html',
           controller: 'ManageController'
       }).
       when('/submit', {
-          templateUrl: 'partials/submit.html',
+          templateUrl: 'app/partials/submit.html',
           controller: 'SubmitController'
       }).
       when('/item/:item', {
-          templateUrl: 'partials/item.html',
+          templateUrl: 'app/partials/item.html',
           controller: 'ItemController'
       }).
       when('/update/:item', {
-          templateUrl: 'partials/submit.html',
+          templateUrl: 'app/partials/submit.html',
           controller: 'SubmitController'
       }).
       when ('/', {
