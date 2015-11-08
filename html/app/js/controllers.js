@@ -9,9 +9,10 @@ var startsWith = function(str, start) {
 
 // SubmitController and submit.html are used for submitting *and* updating
 controllers.controller('SubmitController', function($scope, $http, $location, $routeParams) {
+    $scope.files = [];
+    
     var formHasChanges = function() {
-        var hasChanges = $scope.form.$dirty || ($scope.files.length > 0);
-        return hasChanges;
+        return $scope.form.$dirty || ($scope.files.length > 0);
     };
     
     // returns true if user clicks okay
@@ -50,6 +51,7 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
         $scope.revert = function() {
             if (!formHasChanges() || confirmLostChanges()) {
                 get();
+                $scope.files = []; // could alternatively go in get()
                 $scope.form.$setPristine();
             }
         };
@@ -72,7 +74,6 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
     };
     notLoading();
     
-    $scope.files = [];
     $scope.change = function(file) {
         if (file.value) {
             for (var i = 0; i < file.files.length; i++) {
