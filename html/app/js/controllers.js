@@ -9,6 +9,16 @@ var startsWith = function(str, start) {
 
 // SubmitController and submit.html are used for submitting *and* updating
 controllers.controller('SubmitController', function($scope, $http, $location, $routeParams) {
+    var formHasChanges = function() {
+        var hasChanges = $scope.form.$dirty || ($scope.files.length > 0);
+        return hasChanges;
+    };
+    
+    // returns true if user clicks okay
+    var confirmLostChanges = function() {
+        return confirm("Your changes will be lost.\nContinue?");
+    };
+    
     $scope.updateFlag = startsWith($location.$$url, "/update/");
     
     // Stuff specific to update page goes below, although some update-specific
@@ -37,7 +47,12 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
         
         get();
         
-        $scope.revert = get;
+        $scope.revert = function() {
+            if (!formHasChanges() || confirmLostChanges()) {
+                get();
+                $scope.form.$setPristine();
+            }
+        };
         
         $scope.cancel = function() {
             $location.path('/item/' + id);
@@ -54,7 +69,7 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
     var loading = function() {
         $scope.loading = true;
         $scope.submitClass = 'glyphicon glyphicon-refresh glyphicon-refresh-animate';
-    }
+    };
     notLoading();
     
     $scope.files = [];
@@ -101,14 +116,8 @@ controllers.controller('SubmitController', function($scope, $http, $location, $r
         return fd;
     }
     
-    var formHasChanges = function() {
-        var hasChanges = !document.getElementById('form').classList.contains('ng-pristine');
-        hasChanges = hasChanges || ($scope.files.length > 0);
-        return hasChanges;
-    }
-    
     var offLocationChange = $scope.$on('$locationChangeStart', function(event, next, current) {
-        if (formHasChanges() && !confirm("Your changes will be lost.\nContinue?")) {
+        if (formHasChanges() && !confirmLostChanges()) {
             event.preventDefault();
         }
     });
