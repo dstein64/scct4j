@@ -33,6 +33,9 @@ body {
 	margin: initial;
 	font-size: inherit;
 	font-family: inherit;
+	
+	white-space: pre-wrap;
+	word-break: normal;
 }
 
 .glyphicon-refresh-animate {
