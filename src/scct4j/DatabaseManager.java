@@ -80,7 +80,7 @@ public class DatabaseManager {
     public static String clobToString(Clob clob) throws IOException, SQLException {
         InputStream in = clob.getAsciiStream();
         StringWriter w = new StringWriter();
-        IOUtils.copy(in, w);
+        IOUtils.copy(in, w, "UTF-8");
         in.close();
         w.close();
         return w.toString();
