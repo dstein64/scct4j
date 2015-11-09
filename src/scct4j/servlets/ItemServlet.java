@@ -79,12 +79,17 @@ public class ItemServlet extends HttpServlet {
         }
         object.put("files", array);
         
-        out.write(object.toString().getBytes());
+        resp.setContentType("application/json;charset=UTF-8");
+        out.write(object.toString().getBytes("UTF-8"));
         out.close();
     }
     
     private String partToString(Part p, HttpServletRequest req) throws IOException, ServletException {
-        return IOUtils.toString(p.getInputStream());
+        // TODO: if possible, force encoding UTF-8 when uploading form in UI (SubmitController)
+        String contentType = p.getContentType();
+        if (contentType == null)
+            contentType = "UTF-8";
+        return IOUtils.toString(p.getInputStream(), contentType);
     }
     
     /**

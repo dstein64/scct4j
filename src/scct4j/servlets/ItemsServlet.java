@@ -62,7 +62,8 @@ public class ItemsServlet extends HttpServlet {
             array.put(object);
         }
         
-        out.write(array.toString().getBytes());
+        resp.setContentType("application/json;charset=UTF-8");
+        out.write(array.toString().getBytes("UTF-8"));
         out.close();
     }
 }
