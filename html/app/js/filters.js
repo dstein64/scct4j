@@ -1,16 +1,16 @@
 'use strict';
 
-var filtes = angular.module('filters', []);
+var filters = angular.module('filters', []);
 
 // 'short' date with a non-breaking space in the between numeric time and AM/PM
-filtes.filter('mydate', function($filter) {
+filters.filter('mydate', function($filter) {
     return function(input) {
         return $filter('date')(input, "M/d/yyyy h:mm\xA0a");
     };
 });
 
 // non-breaking date. that is, all spaces replaced with non-breaking spaces
-filtes.filter('nbdate', function($filter) {
+filters.filter('nbdate', function($filter) {
     return function(input, format) {
         var d = $filter('date')(input, format);
         if (d) d = d.split(' ').join('\xA0');
@@ -18,7 +18,7 @@ filtes.filter('nbdate', function($filter) {
     };
 });
 
-filtes.filter('filesize', function () {
+filters.filter('filesize', function () {
     var units = ['bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
 
     return function( bytes, precision ) {
