@@ -37,7 +37,7 @@
 				<tr ng-repeat="item in items | filter : query | orderBy : descProp + orderProp">
 					<td class="col-md-2"
 					    style="max-width: 120px; word-wrap: break-word;">
-					  <a href="#/item/{{item.id}}">{{item.name}}</a>
+					  <a href="app/#/item/{{item.id}}">{{item.name}}</a>
 					</td>
 					<td class="col-md-1">{{item.id}}</td>
 					<td class="col-md-1">{{item.created | mydate}}</td>
