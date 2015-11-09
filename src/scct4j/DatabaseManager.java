@@ -16,6 +16,7 @@ import java.util.logging.Level;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.derby.tools.ij;
 
 public class DatabaseManager {
@@ -78,7 +79,7 @@ public class DatabaseManager {
     }
     
     public static String clobToString(Clob clob) throws IOException, SQLException {
-        InputStream in = clob.getAsciiStream();
+        InputStream in = new ReaderInputStream(clob.getCharacterStream());
         StringWriter w = new StringWriter();
         IOUtils.copy(in, w, "UTF-8");
         in.close();
