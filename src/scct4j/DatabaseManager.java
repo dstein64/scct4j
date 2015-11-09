@@ -79,6 +79,7 @@ public class DatabaseManager {
     }
     
     public static String clobToString(Clob clob) throws IOException, SQLException {
+        // use getCharacterStream() instead of getAsciiStream() (to avoid encoding issues)
         InputStream in = new ReaderInputStream(clob.getCharacterStream());
         StringWriter w = new StringWriter();
         IOUtils.copy(in, w, "UTF-8");
