@@ -13,7 +13,7 @@
             <span ng-show="item.existingFiles.length == 0">&#216;</span>
             <ul ng-show="item.existingFiles.length > 0" class="list-unstyled">
                 <li ng-repeat="file in item.existingFiles">
-                    <label style="font-weight: normal;">
+                    <label style="font-weight: normal; margin: 0px">
                         <input type="checkbox" ng-model="file.keep"></input>
                         <a href="/file/{{file.id}}">{{file.name}}</a>
                         ({{file.size | filesize : 2}})
