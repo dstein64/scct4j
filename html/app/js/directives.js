@@ -7,7 +7,10 @@ directives.directive('navigation', function() {
         restrict: 'E',
         templateUrl: 'app/partials/navigation.html'
     };
-}).directive('input', function() {
+});
+
+// makes <input type='range'> use numbers instead of strings
+directives.directive('input', function() {
     return {
         restrict: 'E',
         require: '?ngModel',
