@@ -81,11 +81,11 @@ public class FileManager {
         List<BigInteger> fids = new ArrayList<BigInteger>();
         Connection conn = DatabaseManager.theConnection();
         PreparedStatement ps =
-                conn.prepareStatement("SELECT file FROM itemfiles WHERE item = ?");
+                conn.prepareStatement("SELECT file_id FROM itemfiles WHERE item_id = ?");
         ps.setBigDecimal(1, new BigDecimal(id));
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            fids.add(rs.getBigDecimal("file").toBigInteger());
+            fids.add(rs.getBigDecimal("file_id").toBigInteger());
         }
         return fids;
     }
