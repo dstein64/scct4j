@@ -2,7 +2,12 @@
 <html ng-app="app">
 
   <head>
-    <base href="/">
+    <script type="text/javascript">
+        var base = document.createElement("base");
+        var pathname = location.pathname;
+        base.href = pathname.substring(0,pathname.lastIndexOf('app/'));
+        document.head.appendChild(base);
+    </script>
   
     <link href="lib/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="app/css/style.css" rel="stylesheet" />

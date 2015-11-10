@@ -1,51 +1,54 @@
 <div class="container">
-    <div class="row col-md-12">
-	    <dl class="dl-horizontal col-md-10">
-	        <dt>Name</dt>
-	        <dd>{{item.name}}</dd>
+  <div class="row col-md-10">
+    <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>{{item.name}}</dd>
+    
+	    <dt>ID</dt>
+	    <dd>{{item.id}}</dd>
+        
+        <dt>Created</dt>
+        <dd>{{item.created | nbdate : 'short'}}</dd>
+        
+        <dt>Modified</dt>
+        <dd>{{item.modified | nbdate : 'short'}}</dd>
+        
+        <dt>Priority</dt>
+        <dd>{{item.priority}}</dd>
 	    
-		    <dt>ID</dt>
-		    <dd>{{item.id}}</dd>
-	        
-	        <dt>Created</dt>
-	        <dd>{{item.created | nbdate : 'short'}}</dd>
-	        
-	        <dt>Modified</dt>
-	        <dd>{{item.modified | nbdate : 'short'}}</dd>
-	        
-	        <dt>Priority</dt>
-	        <dd>{{item.priority}}</dd>
-		    
-		    <dt>Description</dt>
-		    <dd>
-		      <pre class="simple-pre">{{item.description}}</pre>
-		    </dd>
-		    
-		    <dt>Files</dt>
-	        <dd>
-	            <span ng-show="item.files.length == 0">&#216;</span>
-	            <ul ng-show="item.files.length > 0" class="list-unstyled">
-			        <li ng-repeat="file in item.files">
-			            <a href="/file/{{file.id}}">{{file.name}}</a>
-			            ({{file.size | filesize : 2}})
-			        </li>
-			    </ul>
-	        </dd>
-	    </dl>
-	</div>
-    <div class="row">
-        <button ng-click="update()" class="btn btn-primary">
-          <i class="glyphicon glyphicon-edit"></i>
-          Update
-        </button>
-        <button ng-click="del()" class="btn btn-danger">
-          <i class="glyphicon glyphicon-remove"></i>
-          Delete
-        </button>
-        <button ng-click="get()" class="btn btn-default">
-          <i class="glyphicon glyphicon-refresh"></i>
-          Refresh
-        </button>
-    </div>
+	    <dt>Description</dt>
+	    <dd>
+	      <pre class="simple-pre">{{item.description}}</pre>
+	    </dd>
+	    
+	    <dt>Files</dt>
+        <dd>
+            <span ng-show="item.files.length == 0">&#216;</span>
+            <ul ng-show="item.files.length > 0" class="list-unstyled">
+		        <li ng-repeat="file in item.files">
+		            <a href="/file/{{file.id}}">{{file.name}}</a>
+		            ({{file.size | filesize : 2}})
+		        </li>
+		    </ul>
+        </dd>
+       
+        <br>
+	    <dt></dt>
+	    <dd>
+	        <button ng-click="update()" class="btn btn-primary">
+	          <i class="glyphicon glyphicon-edit"></i>
+	          Update
+	        </button>
+	        <button ng-click="del()" class="btn btn-danger">
+	          <i class="glyphicon glyphicon-remove"></i>
+	          Delete
+	        </button>
+	        <button ng-click="get()" class="btn btn-default">
+	          <i class="glyphicon glyphicon-refresh"></i>
+	          Refresh
+	        </button>
+        </dd>
+    </dl>
+  </div>
 </div>
 
