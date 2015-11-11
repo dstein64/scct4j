@@ -2,4 +2,4 @@ derby.log
 bin/
 db/derby/
 files/
-
+tomcat.*/
