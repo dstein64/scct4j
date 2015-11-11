@@ -101,7 +101,7 @@ public class FileManager {
     public synchronized void delete(BigInteger fid) throws SQLException, IOException, GeneralSecurityException {
         // TODO: the following should be done in one transaction
         Connection conn = DatabaseManager.theConnection();
-        PreparedStatement ps = conn.prepareStatement("DELETE FROM itemfiles WHERE file = ?");
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM itemfiles WHERE file_id = ?");
         ps.setBigDecimal(1, new BigDecimal(fid));
         ps.execute();
         ps = conn.prepareStatement("DELETE FROM files WHERE id = ?");
