@@ -42,7 +42,7 @@ public class Main extends Thread {
         tomcat.getConnector().setProperty("maxThreads", "2000");
         tomcat.getConnector().setProperty("acceptCount", "2000");
         tomcat.getConnector().setProperty("compression", "on");
-        // Supress server version in Server header (e.g., Server:Apache-Coyote/1.1) - doesn't suppress for error pages though
+        // Suppress server version in Server header (e.g., Server:Apache-Coyote/1.1) - doesn't suppress for error pages though
         // see http://www.techstacks.com/howto/suppress-server-identity-in-tomcat.html
         tomcat.getConnector().setProperty("server", "Apache Tomcat");
         tomcat.getConnector().setProperty("compressableMimeType", "text/html,text/xml,text/plain,application/json,text/javascript");
